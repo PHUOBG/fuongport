@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Provide the location of the sitemap
-Sitemap: https://ngocphuong.dev/sitemap.xml
+Sitemap: https://phuport.dpdns.org/sitemap.xml

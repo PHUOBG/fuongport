@@ -1,0 +1,7 @@
+/github https://github.com/PHUOBG 301
+/linkedin https://www.linkedin.com/in/ng%E1%BB%8Dc-ph%C6%B0%C6%A1ng-7a6267411 301
+/facebook https://www.facebook.com/phuong0v0 301
+/cv https://canva.link/cv-cua-fuong 302
+/blogs /blog 301
+/blogs/* /blog/:splat 301
+

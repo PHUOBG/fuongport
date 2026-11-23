@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = "https://ngocphuong.dev";
+const DEFAULT_SITE_URL = "https://phuport.dpdns.org";
 
 export const SITE_URL = (process.env.SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, "");
 

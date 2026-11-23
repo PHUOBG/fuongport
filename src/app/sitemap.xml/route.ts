@@ -1,6 +1,7 @@
 import { blogs, projects } from "#velite";
 import { SITE_URL } from "@/lib/site";
 
+export const dynamic = "force-static";
 export const revalidate = 3600;
 
 export async function GET() {

@@ -10,6 +10,7 @@
     "velite": "velite build",
     "dev": "npm run velite && concurrently -k -n velite,next -c cyan,magenta \"velite dev\" \"next dev\"",
     "build": "npm run clean && npm run velite && next build",
+    "build:cf": "node scripts/build-cf-pages.mjs",
     "analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "biome lint --write",
