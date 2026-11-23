@@ -1,0 +1,287 @@
+"use client";
+
+import { ArrowRight } from "lucide-react";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
+import { memo, useEffect, useState } from "react";
+import { bio } from "#velite";
+import { SocialLink } from "@/components/layout/SocialLink";
+import { Button } from "@/components/ui/Button";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useTheme } from "@/hooks/useTheme";
+import { ROUTES } from "@/lib/routes";
+import { cn } from "@/lib/utils";
+import { HERO_SOCIALS, HERO_STACK_RIBBONS, HERO_TAGLINES } from "./Hero.data";
+
+const HeroAnimated = dynamic(() => import("./HeroAnimated").then((m) => m.HeroAnimated), {
+  ssr: false,
+});
+
+// --- ACCESSIBILITY-FIRST NAME GRADIENTS (FINAL VERSION) ---
+const NAME_GRADIENTS: Record<string, string> = {
+  // UPDATED: Light and Dark now use a single color, implemented as a uniform gradient.
+  light: "bg-gradient-to-r from-blue-600 to-blue-600",
+  dark: "bg-gradient-to-r from-purple-500 to-purple-500",
+
+  // RETAINED: All other themes keep their correct, refined gradients.
+  mirage: "bg-gradient-to-r from-cyan-500 to-teal-400",
+  horizon: "bg-gradient-to-r from-orange-500 via-rose-500 to-pink-600",
+  simple: "bg-gradient-to-r from-foreground to-foreground",
+  ethereal: "bg-gradient-to-r from-pink-400 to-indigo-400",
+  cyberpunk: "text-gradient-theme",
+};
+
+// Local fade variants replaced by shared presets (fadeUp + staggerContainer)
+
+import { useDayPhase } from "@/hooks/useDayPhase";
+import { useSectionMotion } from "@/hooks/useSectionMotion";
+
+export function Hero() {
+  const reduceMotion = usePrefersReducedMotion();
+  const sectionMotion = useSectionMotion();
+  const { theme, isMounted } = useTheme();
+  const { greeting, hydrated: clockHydrated } = useDayPhase();
+  const taglines = HERO_TAGLINES as readonly string[];
+  const [taglineIndex, setTaglineIndex] = useState(0);
+  const [typedTagline, setTypedTagline] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const currentTaglineLabel = taglines[taglineIndex] ?? bio.tagline ?? "";
+
+  useEffect(() => {
+    const fullText = taglines[taglineIndex] ?? "";
+    // Simple, smooth loop: type -> hold -> delete -> brief gap -> next
+    const initialDelayMs = typedTagline.length === 0 && !isDeleting ? 520 : 0;
+    const typeSpeedMs = 56;
+    const deleteSpeedMs = 40;
+    const holdFullMs = 2200;
+    const holdEmptyMs = 520;
+
+    let timeout: number | undefined;
+
+    const atFull = typedTagline === fullText;
+    const atEmpty = typedTagline.length === 0;
+
+    if (!isDeleting && atFull) {
+      timeout = window.setTimeout(() => setIsDeleting(true), holdFullMs);
+    } else if (isDeleting && atEmpty) {
+      timeout = window.setTimeout(() => {
+        setIsDeleting(false);
+        setTaglineIndex((prev) => (prev + 1) % taglines.length);
+      }, holdEmptyMs);
+    } else {
+      const nextLen = typedTagline.length + (isDeleting ? -1 : 1);
+      const nextText = fullText.slice(0, Math.max(0, nextLen));
+      timeout = window.setTimeout(
+        () => setTypedTagline(nextText),
+        initialDelayMs || (isDeleting ? deleteSpeedMs : typeSpeedMs)
+      );
+    }
+
+    return () => {
+      if (timeout) window.clearTimeout(timeout);
+    };
+  }, [taglineIndex, typedTagline, isDeleting]);
+
+  /*
+   * The terminal caret is a Cyberpunk signature, and it is a continuous CSS blink.
+   *
+   * Two reasons not to show it, both previously ignored:
+   *
+   * 1. Motion. A blinking caret is the one element in the hero that never stops, so a
+   *    reduced-motion visitor should not get one.
+   * 2. Theme. `.terminal-cursor` is scoped to `[data-theme="cyberpunk"]`, so under every other
+   *    theme the class is just an un-blinked 4px rule -- a stray bar beside the tagline. Before
+   *    the scope existed the blink itself ran on all seven themes.
+   *
+   * `isMounted` is required, not defensive. `next-themes` resolves its theme from localStorage in
+   * a `useState` initialiser that returns `undefined` on the server, so during hydration the client
+   * already knows the theme while the server rendered with the fallback. Gating on motion alone
+   * made the server emit no caret and the client emit one -- a hydration mismatch on every
+   * Cyberpunk page load.
+   */
+  const showCaret = isMounted && !reduceMotion && theme.name === "cyberpunk";
+
+  const nameGradientClass = isMounted
+    ? NAME_GRADIENTS[theme.name] || "text-foreground"
+    : "text-foreground";
+
+  if (sectionMotion) {
+    return (
+      <HeroAnimated
+        greeting={greeting}
+        greetingReady={clockHydrated}
+        nameGradientClass={nameGradientClass}
+        tagline={typedTagline}
+        taglineLabel={currentTaglineLabel}
+        stackRibbons={[...HERO_STACK_RIBBONS]}
+        reduceMotion={reduceMotion}
+        showCaret={showCaret}
+      />
+    );
+  }
+
+  return (
+    <section
+      data-section="hero"
+      className="flex min-h-[90vh] items-center justify-center px-4 py-16"
+      aria-label="Hero section"
+    >
+      <div className="flex w-full max-w-7xl flex-col items-center gap-6 text-center lg:flex-row lg:items-start lg:justify-center lg:gap-14 lg:text-left">
+        <HeroContent
+          greeting={greeting}
+          greetingReady={clockHydrated}
+          nameGradientClass={nameGradientClass}
+          tagline={typedTagline}
+          taglineLabel={currentTaglineLabel}
+          showCaret={showCaret}
+        />
+        <HeroImage reduceMotion={reduceMotion} />
+      </div>
+    </section>
+  );
+}
+
+const HeroContent = memo(
+  ({
+    greeting,
+    greetingReady,
+    nameGradientClass,
+    tagline,
+    taglineLabel,
+    showCaret,
+  }: {
+    greeting: string;
+    /** False until the visitor's clock has been read; see {@link useDayPhase}. */
+    greetingReady: boolean;
+    nameGradientClass: string;
+    tagline: string;
+    taglineLabel: string;
+    showCaret?: boolean;
+  }) => {
+    const ariaLabel = taglineLabel || bio.tagline || "Tagline";
+    return (
+      <div className="flex flex-col items-center lg:items-start">
+        <div className="flex flex-col items-center lg:items-start">
+          {/*
+            Time-dependent text, so it cannot be rendered during hydration -- see
+            `useDayPhase`. The element keeps its line height (`min-h-lh`, matching the type
+            scale) so nothing below it shifts when the greeting arrives.
+          */}
+          <span
+            className="min-h-lh font-medium text-muted-foreground text-xl md:text-2xl"
+            aria-live="polite"
+          >
+            {greetingReady ? greeting : null}
+          </span>
+
+          <div className="flex flex-row items-center gap-x-1">
+            <div className="flex translate-y-1 flex-col">
+              <span className="font-medium text-muted-foreground text-xl leading-tight md:text-2xl">
+                Hi!
+              </span>
+              <span className="font-medium text-muted-foreground text-xl leading-tight md:text-2xl">
+                I'm
+              </span>
+            </div>
+            <h1
+              className={cn(
+                "bg-clip-text font-extrabold text-5xl text-transparent md:text-7xl",
+                "leading-snug transition-colors duration-500",
+                nameGradientClass
+              )}
+            >
+              {bio.name?.trim() ? bio.name : "Portfolio"}
+            </h1>
+          </div>
+        </div>
+
+        <div className="mt-1 flex h-10 flex-row items-center">
+          <h2
+            className="font-semibold text-2xl text-primary md:text-3xl"
+            aria-label={ariaLabel}
+          >
+            {tagline}
+            {tagline.length === 0 ? <span className="sr-only">{ariaLabel}</span> : null}
+            {showCaret ? (
+              <span
+                className="terminal-cursor ml-0.5 inline-block h-[1.15em] w-0"
+                aria-hidden
+              />
+            ) : null}
+          </h2>
+        </div>
+
+        <ul
+          className="mt-3 flex list-none flex-wrap justify-center gap-2 p-0 lg:justify-start"
+          aria-label="Core focus areas"
+        >
+          {HERO_STACK_RIBBONS.map((label) => (
+            <li
+              key={label}
+              className="rounded-full border border-border/70 bg-muted/40 px-3 py-1 font-medium text-muted-foreground text-xs"
+            >
+              {label}
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-4 max-w-xl text-lg text-muted-foreground leading-snug md:text-xl lg:text-left">
+          {bio.summary}
+        </p>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-4 lg:justify-start">
+          <Button
+            asChild
+            size="lg"
+            aria-label="View Projects"
+          >
+            <Link href={ROUTES.projects}>
+              View Projects <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            aria-label="Contact Me"
+          >
+            <Link href={ROUTES.contact}>Contact Me</Link>
+          </Button>
+        </div>
+
+        <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
+          {HERO_SOCIALS.map((social) => (
+            <SocialLink
+              key={social.name}
+              {...social}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+);
+HeroContent.displayName = "HeroContent";
+
+const HeroImage = memo(({ reduceMotion }: { reduceMotion: boolean }) => {
+  return (
+    <div
+      className={cn(
+        "group -mt-4 relative h-64 w-64 shrink-0 overflow-hidden rounded-full border-4 border-accent lg:mt-6 lg:h-80 lg:w-80",
+        reduceMotion ? "" : "animate-float"
+      )}
+    >
+      <Image
+        src="/assets/images/ngoc-phuong-hero.jpg"
+        alt="Ngoc Phuong profile photo"
+        fill
+        sizes="(max-width: 1023px) 256px, 320px"
+        quality={95}
+        className="scale-[1.28] object-cover object-[50%_58%] transition-transform duration-300 ease-in-out group-hover:scale-[1.34]"
+        priority
+      />
+    </div>
+  );
+});
+HeroImage.displayName = "HeroImage";

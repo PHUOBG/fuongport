@@ -1,0 +1,721 @@
+/*
+================================================================================
+|
+| --- Personal Portfolio: Theme Animations ---
+|
+| This file contains all the CSS keyframe animations used across the seven
+| portfolio themes. Each animation is designed to be subtle, performant,
+| and evocative of its corresponding theme's concept.
+|
+| Performance Hint: The 'will-change' property is used to give the browser
+| a heads-up about upcoming transformations, which can help with optimization.
+|
+================================================================================
+*/
+
+/* === GLOBAL PERFORMANCE HINTS === */
+/* Avoid broad `will-change` on many elements; keep hints narrowly scoped. */
+
+/* transform-driven */
+.animate-slot-in,
+.animate-star-scroll,
+.animate-deep-star-scroll,
+.animate-float-subtle,
+.animate-lens-flare-pulse,
+.animate-heat-shimmer-subtle,
+.animate-float,
+.animate-horizon-moonbeam-sway,
+.animate-horizon-car-idle,
+.animate-horizon-cafe-breeze {
+  will-change: transform;
+}
+
+/* background-position driven */
+.animate-gradient-pan,
+.animate-dreamscape-flow,
+.animate-data-rain,
+.animate-sky-pan,
+.animate-pan-diagonal,
+.animate-aurora-sway,
+.animate-horizon-sunrise-shimmer,
+.animate-horizon-sunset-drift,
+.animate-horizon-night-twinkle,
+.animate-horizon-day-caustics,
+.animate-horizon-shore-glimmer,
+.animate-horizon-mountain-haze,
+.animate-horizon-dust-drift,
+.animate-horizon-fog-drift,
+.animate-horizon-water-glint,
+.animate-horizon-birds-drift,
+.animate-horizon-awning-drift {
+  will-change: background-position;
+}
+
+/* filter/opacity driven */
+.animate-defocus-fade {
+  will-change: opacity, filter;
+}
+
+/* opacity driven */
+.animate-horizon-city-flicker {
+  will-change: opacity;
+}
+
+/* === SHARED & UTILITY ANIMATIONS === */
+@keyframes slot-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slot-in {
+  animation: slot-in 0.5s ease-out forwards;
+}
+
+@keyframes defocus-fade {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.animate-defocus-fade {
+  animation: defocus-fade 0.8s ease-in-out forwards;
+}
+
+/* === Theme 1: Light (Illuminated Canvas) === */
+/* A slow, multi-directional pan used for subtle background light shifts. */
+@keyframes gradient-pan {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.animate-gradient-pan {
+  animation: gradient-pan 25s ease infinite;
+}
+
+/* === Theme 2: Dark (Cosmic Noir) === */
+/* Slow scroll for distant, primary starfield */
+@keyframes star-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-2000px, 500px, 0);
+  }
+}
+.animate-star-scroll {
+  animation: star-scroll 300s linear infinite;
+}
+
+/* Faster scroll for closer, parallax star layers */
+@keyframes deep-star-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-3000px, 750px, 0);
+  }
+}
+.animate-deep-star-scroll {
+  animation: deep-star-scroll 250s linear infinite;
+}
+
+/* === Theme 3: Cyberpunk (Midnight Alley, Neon Rain) === */
+/* Simulates the endless scroll of a data rain terminal background */
+@keyframes data-rain {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 -1000px;
+  }
+}
+.animate-data-rain {
+  animation: data-rain 25s linear infinite;
+}
+
+/* === Theme 4: Ethereal (Lucid Dreamscape) === */
+/* Used for the soft, flowing gradients in the Ethereal theme background. */
+@keyframes dreamscape-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.animate-dreamscape-flow {
+  animation: dreamscape-flow 25s ease infinite;
+}
+
+/* The gentle floating motion for UI elements */
+@keyframes float-subtle {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+.animate-float-subtle {
+  animation: float-subtle 10s ease-in-out infinite;
+}
+
+/* === Theme 5: Horizon (Dynamic Day Cycle) === */
+/* Ultra-slow movement for atmospheric cloud layers in the skybox */
+@keyframes sky-pan {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 200% 0%;
+  }
+}
+.animate-sky-pan {
+  animation: sky-pan 120s linear infinite;
+}
+
+/* Drift for starfield overlay (used via inline `animation: pan-diagonal ...`). */
+@keyframes pan-diagonal {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -300px 300px;
+  }
+}
+
+.animate-pan-diagonal {
+  animation: pan-diagonal 60s linear infinite;
+}
+
+/* Aurora veil motion (slow background drift) */
+@keyframes aurora-sway {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 40%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.animate-aurora-sway {
+  animation: aurora-sway 90s ease-in-out infinite;
+}
+
+/* Horizon narrative setting loops (tiny, story-driven accents) */
+@keyframes horizon-moonbeam-sway {
+  0% {
+    transform: translateX(-0.6%) skewX(-1.5deg);
+    opacity: 0.52;
+  }
+  50% {
+    transform: translateX(0.6%) skewX(0deg);
+    opacity: 0.62;
+  }
+  100% {
+    transform: translateX(-0.6%) skewX(-1.5deg);
+    opacity: 0.52;
+  }
+}
+.animate-horizon-moonbeam-sway {
+  animation: horizon-moonbeam-sway 18s ease-in-out infinite;
+}
+
+@keyframes horizon-shore-glimmer {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      0 0,
+      -320px 0;
+  }
+}
+.animate-horizon-shore-glimmer {
+  animation: horizon-shore-glimmer 32s linear infinite;
+}
+
+@keyframes horizon-mountain-haze {
+  0% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0% 0%;
+  }
+  50% {
+    background-position:
+      100% 10%,
+      60% 10%,
+      0% 0%;
+  }
+  100% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0% 0%;
+  }
+}
+.animate-horizon-mountain-haze {
+  animation: horizon-mountain-haze 48s ease-in-out infinite;
+}
+
+@keyframes horizon-car-idle {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.animate-horizon-car-idle {
+  animation: horizon-car-idle 9s ease-in-out infinite;
+}
+
+@keyframes horizon-cafe-breeze {
+  0% {
+    transform: rotate(-0.2deg) translateY(0);
+  }
+  50% {
+    transform: rotate(0.25deg) translateY(-1px);
+  }
+  100% {
+    transform: rotate(-0.2deg) translateY(0);
+  }
+}
+.animate-horizon-cafe-breeze {
+  animation: horizon-cafe-breeze 12s ease-in-out infinite;
+}
+
+@keyframes horizon-dust-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -240px 120px;
+  }
+}
+.animate-horizon-dust-drift {
+  animation: horizon-dust-drift 70s linear infinite;
+}
+
+@keyframes horizon-fog-drift {
+  0% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0% 0%;
+  }
+  50% {
+    background-position:
+      100% 0%,
+      70% 0%,
+      0% 0%;
+  }
+  100% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0% 0%;
+  }
+}
+.animate-horizon-fog-drift {
+  animation: horizon-fog-drift 90s ease-in-out infinite;
+}
+
+@keyframes horizon-water-glint {
+  from {
+    background-position:
+      0 0,
+      0% 0%;
+  }
+  to {
+    background-position:
+      -520px 0,
+      0% 0%;
+  }
+}
+.animate-horizon-water-glint {
+  animation: horizon-water-glint 44s linear infinite;
+}
+
+@keyframes horizon-birds-drift {
+  0% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0 0,
+      0 0,
+      0 0;
+  }
+  50% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      -520px 240px,
+      -680px 320px,
+      -740px 280px;
+  }
+  100% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0 0,
+      0 0,
+      0 0;
+  }
+}
+.animate-horizon-birds-drift {
+  animation: horizon-birds-drift 80s ease-in-out infinite;
+}
+
+@keyframes horizon-awning-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -380px 0;
+  }
+}
+.animate-horizon-awning-drift {
+  animation: horizon-awning-drift 60s linear infinite;
+}
+
+@keyframes horizon-city-flicker {
+  0%,
+  100% {
+    opacity: 0.38;
+  }
+  18% {
+    opacity: 0.46;
+  }
+  22% {
+    opacity: 0.34;
+  }
+  36% {
+    opacity: 0.48;
+  }
+  58% {
+    opacity: 0.42;
+  }
+  62% {
+    opacity: 0.5;
+  }
+}
+.animate-horizon-city-flicker {
+  animation: horizon-city-flicker 9s ease-in-out infinite;
+}
+
+/* Horizon phase FX loops (all gentle, cinematic) */
+@keyframes horizon-sunrise-shimmer {
+  0% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0 0;
+  }
+  50% {
+    background-position:
+      100% 30%,
+      50% 10%,
+      -260px 0;
+  }
+  100% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0 0;
+  }
+}
+.animate-horizon-sunrise-shimmer {
+  animation: horizon-sunrise-shimmer 80s ease-in-out infinite;
+}
+
+@keyframes horizon-sunset-drift {
+  0% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0 0;
+  }
+  50% {
+    background-position:
+      100% 40%,
+      50% 20%,
+      -320px 0;
+  }
+  100% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      0 0;
+  }
+}
+.animate-horizon-sunset-drift {
+  animation: horizon-sunset-drift 85s ease-in-out infinite;
+}
+
+@keyframes horizon-night-twinkle {
+  0% {
+    opacity: 0.55;
+    background-position:
+      0% 0%,
+      0% 0%,
+      0 0,
+      0 0,
+      0 0;
+  }
+  50% {
+    opacity: 0.78;
+    background-position:
+      100% 30%,
+      70% 20%,
+      -300px 300px,
+      -450px 240px,
+      -380px 320px;
+  }
+  100% {
+    opacity: 0.55;
+    background-position:
+      0% 0%,
+      0% 0%,
+      0 0,
+      0 0,
+      0 0;
+  }
+}
+.animate-horizon-night-twinkle {
+  animation: horizon-night-twinkle 70s ease-in-out infinite;
+}
+
+@keyframes horizon-day-caustics {
+  0% {
+    background-position:
+      0% 0%,
+      0 0;
+  }
+  50% {
+    background-position:
+      100% 25%,
+      -520px 220px;
+  }
+  100% {
+    background-position:
+      0% 0%,
+      0 0;
+  }
+}
+.animate-horizon-day-caustics {
+  animation: horizon-day-caustics 95s ease-in-out infinite;
+}
+
+/* Subtle pulsing effect for the "sun" or a lens flare element */
+@keyframes lens-flare-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+.animate-lens-flare-pulse {
+  animation: lens-flare-pulse 9s ease-in-out infinite;
+}
+
+/* === Theme 6: Mirage (Hallucinatory Oasis) === */
+/* Creates a subtle, wavy distortion effect like desert heat */
+@keyframes heat-shimmer-subtle {
+  0%,
+  100% {
+    transform: skewX(0deg);
+  }
+  50% {
+    transform: skewX(0.15deg);
+  }
+}
+.animate-heat-shimmer-subtle {
+  animation: heat-shimmer-subtle 8s ease-in-out infinite alternate;
+}
+
+/* === Theme 7: Simple === */
+/* Intentionally blank to ensure zero motion for maximum accessibility. */
+
+/* Simple is a *theme-level calm mode* (in addition to prefers-reduced-motion). */
+html[data-theme="simple"] {
+  scroll-behavior: auto;
+}
+
+/* Disable utility/Radix open-close animations in Simple. */
+html[data-theme="simple"] .animate-in,
+html[data-theme="simple"] .animate-out,
+html[data-theme="simple"] .animate-accordion-down,
+html[data-theme="simple"] .animate-accordion-up {
+  animation: none;
+}
+
+/* Disable common Tailwind transition utilities in Simple. */
+html[data-theme="simple"] .transition,
+html[data-theme="simple"] .transition-all,
+html[data-theme="simple"] .transition-colors,
+html[data-theme="simple"] .transition-opacity,
+html[data-theme="simple"] .transition-shadow,
+html[data-theme="simple"] .transition-transform {
+  transition-duration: 0ms;
+  transition-delay: 0ms;
+}
+
+/* === UTILITY ANIMATIONS === */
+/* Fade in animation for content sections */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
+/*
+ * Reduced-motion override for `.animate-fade-in`.
+ *
+ * It has to live HERE, directly after the definition above, rather than in the shared
+ * reduced-motion block at the end of this file. That block cancels the animation; this one also
+ * has to restore the end state, and it can only do that where the class is defined.
+ *
+ * `opacity: 1` is load-bearing, not cosmetic. `Expertise.tsx` pairs this class with
+ * Tailwind's `opacity-0` to avoid a flash of unstyled content in the frame before the fade
+ * starts. That guard would normally outrank nothing here, but `opacity-0` lives in Tailwind's
+ * `@layer utilities` while this rule is unlayered, and unlayered declarations outrank any
+ * layer regardless of source order. So without restating the end state here, cancelling the
+ * animation would leave the element at `opacity: 0` and permanently invisible.
+ * Setting both together keeps the pair atomic: no fade, and content immediately legible.
+ *
+ * The normal (motion-allowed) path is untouched -- the fade and its no-flash pre-state still
+ * behave exactly as before.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Float animation for hero image */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* === CYBERPUNK THEME ANIMATIONS === */
+/* Beacon blink for building lights */
+@keyframes beacon-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* Rain fall effect for scan lines */
+@keyframes rain-fall {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(20px);
+  }
+}
+
+/*
+ * Reduced motion: cancel every animation this file defines.
+ *
+ * This block lives at the *end* of the file, and that is load-bearing.
+ *
+ * It used to sit near the top, above the definitions, on the belief that "all the other classes
+ * are defined above that block". They are not: `.animate-slot-in` is defined 13 lines further
+ * down, `.animate-float-subtle` 130 lines further down, `.animate-float` 600 lines further down.
+ * An equally specific `animation: none` that comes *before* a rule wins the cascade to the
+ * *later* rule, so every one of those overrides was silently doing nothing and the animations
+ * kept playing for visitors who asked for reduced motion -- the whole horizon theme, the
+ * ethereal dreamscape, the starfield drift, the floating hero image.
+ *
+ * A media query adds no specificity, so the only thing that decides this is source order: the
+ * override has to come last. `.animate-fade-in` has its own block next to its definition for a
+ * different reason -- it also has to restore `opacity: 1`, which is explained there.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gradient-pan,
+  .animate-slot-in,
+  .animate-star-scroll,
+  .animate-deep-star-scroll,
+  .animate-defocus-fade,
+  .animate-dreamscape-flow,
+  .animate-float-subtle,
+  .animate-sky-pan,
+  .animate-pan-diagonal,
+  .animate-aurora-sway,
+  .animate-horizon-sunrise-shimmer,
+  .animate-horizon-sunset-drift,
+  .animate-horizon-night-twinkle,
+  .animate-horizon-day-caustics,
+  .animate-horizon-moonbeam-sway,
+  .animate-horizon-shore-glimmer,
+  .animate-horizon-mountain-haze,
+  .animate-horizon-dust-drift,
+  .animate-horizon-fog-drift,
+  .animate-horizon-water-glint,
+  .animate-horizon-birds-drift,
+  .animate-horizon-awning-drift,
+  .animate-horizon-city-flicker,
+  .animate-horizon-car-idle,
+  .animate-horizon-cafe-breeze,
+  .animate-lens-flare-pulse,
+  .animate-heat-shimmer-subtle,
+  .animate-float {
+    animation: none;
+  }
+}

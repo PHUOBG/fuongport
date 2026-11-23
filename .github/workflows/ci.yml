@@ -1,0 +1,48 @@
+# Continuous integration for Ngoc Phuong's Personal Portfolio.
+# Runs Biome checks, Velite + TypeScript type-check, Vitest suite, Next.js build, and bundle budget.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Lint, format, import order
+        run: npx biome check .
+
+      - name: Type-check
+        run: npm run type-check
+
+      - name: Tests with coverage
+        run: npm run test:ci
+
+      - name: Production build
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Bundle budget
+        run: npm run check:bundle

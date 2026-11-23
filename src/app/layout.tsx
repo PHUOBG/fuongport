@@ -1,0 +1,139 @@
+/**
+ * @file: src/app/layout.tsx
+ * @description: The root layout for the entire application.
+ */
+
+// Performance and theme components
+// Framer Motion's MotionConfig supplies global reduced-motion handling for its
+// animation primitives; the static-branch gating lives in `useSectionMotion`.
+import { MotionConfig } from "framer-motion";
+import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
+// SEO and utilities
+import { ClientAttrWrapper } from "@/components/ClientAttrWrapper";
+// Layout components
+import { AppErrorBoundary } from "@/components/layout/AppErrorBoundary";
+import { ClientFooter } from "@/components/layout/ClientFooter";
+import { MainWrapper } from "@/components/layout/MainWrapper";
+import { Navbar } from "@/components/layout/Navbar";
+import { SkipLink } from "@/components/layout/SkipLink";
+import { RootPersonJsonLd } from "@/components/seo/RootPersonJsonLd";
+import { ClientThemeBackground } from "@/components/theme/ClientThemeBackground";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { geistMono, geistSans } from "@/lib/fonts";
+import { METADATA_BASE, SITE_URL } from "@/lib/site";
+import { THEME_NAMES } from "@/lib/themes";
+import { cn } from "@/lib/utils";
+
+// Styles
+import "@/styles/globals.css";
+
+export const metadata: Metadata = {
+  title: { default: "Ngoc Phuong", template: "%s | Ngoc Phuong" },
+  description:
+    "Portfolio of Hoang Thi Ngoc Phuong (Ngoc Phuong) – Software Engineer & AI & Computer Vision Engineer crafting impactful web and AI solutions.",
+  authors: [{ name: "Hoang Thi Ngoc Phuong", url: `${SITE_URL}/` }],
+  metadataBase: METADATA_BASE,
+  openGraph: {
+    title: "Ngoc Phuong | Software Engineer & AI Vision Engineer",
+    description: "Software Engineer & AI & Computer Vision Engineer based in Da Nang, Viet Nam.",
+    url: `${SITE_URL}/`,
+    siteName: "Ngoc Phuong's Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
+  icons: { icon: "/favicon.ico", shortcut: "/favicon-16x16.png", apple: "/apple-touch-icon.png" },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Use a stable ID for skip link target
+  const mainId = "main-content";
+  return (
+    <html
+      lang="en"
+      className={cn("scroll-smooth", geistSans.variable, geistMono.variable)}
+      // Opt in to Next's route-transition handling of `scroll-behavior: smooth`.
+      //
+      // The `scroll-smooth` class above sets `scroll-behavior: smooth`, but that makes every
+      // client-side navigation animate the scroll to the top of the new page, which reads as a
+      // long, janky lurch on a long route. Next fixes this by forcing `scroll-behavior: auto`
+      // for the duration of a route transition, then restoring it -- but only if this
+      // attribute is present. Without it Next logs a dev warning and does nothing.
+      //
+      // In-page and anchor scrolling stay smooth; only route changes jump.
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
+      <head>
+        <meta
+          name="color-scheme"
+          content="light dark"
+        />
+        <meta
+          name="theme-color"
+          content="#000000"
+        />
+        {/*
+          No manual `<link rel="preload">` for the hero photo here.
+          `next/image`'s `priority` on the hero (Hero.tsx / HeroAnimated.tsx) already emits a
+          preload, and unlike a hand-written link it carries `imagesrcset`/`imagesizes`, so it
+          points at an optimised candidate rather than the 1.2 MB original. Keeping both meant the
+          browser downloaded the raw JPEG *and* the optimised variant, then warned that the
+          preloaded resource "was not used within a few seconds".
+        */}
+        <meta
+          name="robots"
+          content="index,follow"
+        />
+        <meta
+          name="googlebot"
+          content="index,follow"
+        />
+        <RootPersonJsonLd />
+      </head>
+      <body className={cn("min-h-screen bg-background font-sans antialiased")}>
+        <ClientAttrWrapper>
+          <ThemeProvider
+            attribute="data-theme"
+            defaultTheme="light"
+            enableSystem={false}
+            themes={[...THEME_NAMES]}
+          >
+            <ClientThemeBackground />
+            <MotionConfig reducedMotion="user">
+              <SkipLink targetId={mainId} />
+              <div className="relative z-10 flex min-h-dvh flex-col">
+                <Navbar />
+                {/** Accessibility: stable id required for skip link target (intentional). */}
+                <AppErrorBoundary>
+                  <MainWrapper
+                    targetId={mainId}
+                    className="container flex-1 py-8 md:py-12 outline-none"
+                  >
+                    {children}
+                  </MainWrapper>
+                </AppErrorBoundary>
+                <Suspense>
+                  <ClientFooter />
+                </Suspense>
+              </div>
+              <Toaster />
+            </MotionConfig>
+          </ThemeProvider>
+        </ClientAttrWrapper>
+      </body>
+    </html>
+  );
+}

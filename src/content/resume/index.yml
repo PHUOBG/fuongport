@@ -1,0 +1,59 @@
+# Timeline of Career Objective, Experience, Community Activities, and Education
+history:
+  - title: "Software Engineer & AI Vision Intern"
+    company: "Open to Work · Frontend, Backend & AI Vision"
+    period: "Looking for:"
+    description: "Seeking Software Engineer (Frontend / Backend) and AI & Computer Vision internship opportunities to solve real-world problems, expand engineering depth, and create meaningful value every day."
+    tags:
+      - "Open to Work"
+      - "Internship"
+      - "Frontend & Backend"
+      - "AI & Computer Vision"
+      - "Python / TypeScript / C#"
+      - "React / Next.js / FastAPI"
+    type: "work"
+
+  - title: "Member"
+    company: "Google Developer Groups on Campus – DUT"
+    period: "Dec 2025 - Present"
+    description: "Participated in technology-focused activities, workshops, and knowledge-sharing sessions. Reached the Final Round of UTE Startup 2026 and VietFuture Awards 2026 with the team while collaborating with fellow students and developers on emerging technologies."
+    tags:
+      - "UTE Startup 2026 Finalist"
+      - "VietFuture Awards 2026 Finalist"
+      - "GDG on Campus"
+      - "Workshops & Community"
+    type: "work"
+
+  - title: "Front-end Developer Intern"
+    company: "Gimme Idea – Startup Idea Sharing & Validation Platform · Da Nang, Viet Nam"
+    period: "Nov 2025 - Present"
+    description: "Contributed to the front-end development of Gimme Idea, a platform for sharing and receiving feedback on startup ideas. Developed and improved user interfaces to enhance usability and user experience, collaborating with the team to implement and refine front-end features."
+    tags:
+      - "Front-end Development"
+      - "UI/UX"
+      - "React / Next.js"
+      - "TypeScript"
+    type: "work"
+
+  - title: "Member"
+    company: "DSUC Blockchain Club"
+    period: "Oct 2025 - Present"
+    description: "Participated in activities focused on blockchain technology and Solana ecosystem development. Competed in the CONVO AI Hackathon (contributing to VoiceTurk, Champion) and participated in Colosseum Crypto World's Fair Hackathon | Superteam Vietnam Track."
+    tags:
+      - "Solana"
+      - "Blockchain"
+      - "CONVO AI Hackathon Champion"
+      - "Superteam Vietnam"
+    type: "work"
+
+  - title: "Bachelor of Information Technology (Specialized – Enterprise Cooperation Program)"
+    institution: "The University of Danang – University of Science and Technology (DUT)"
+    period: "Sep 2025 - Jul 2029"
+    logo: "/assets/images/dut-logo.png"
+    description: "Studying Information Technology in the Specialized Enterprise Cooperation Program. Achievements: 2026 Champion at CONVO AI Hackathon Danang University 2026 (VoiceTurk), Top 12 at AIoT Developer InnoWorks 2026 (AgriHarvest AI), and Finalist at UTE Startup 2026 (FairInsight)."
+    tags:
+      - "Champion – CONVO AI Hackathon 2026"
+      - "Top 12 – AIoT InnoWorks 2026"
+      - "Finalist – UTE Startup 2026"
+      - "Da Nang, Viet Nam"
+    type: "education"

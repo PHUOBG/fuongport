@@ -1,0 +1,180 @@
+"use client"; // This is the key. This component is interactive.
+
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { projects } from "#velite";
+import { GithubIcon as Github } from "@/components/icons/GithubIcon";
+import { ProjectDetailModal, type ProjectModalItem } from "@/components/layout/ProjectDetailModal";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+
+const FADE_UP_VARIANTS = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { type: "spring" as const, duration: 0.8 } },
+};
+
+export function ProjectList() {
+  const [selectedProject, setSelectedProject] = useState<ProjectModalItem | null>(null);
+  /* Copy before sorting: `sort` mutates, and `projects` is a shared Velite content array. */
+  const sortedProjects = [...projects].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  return (
+    <>
+      <motion.div
+        initial="hidden"
+        animate="show"
+        viewport={{ once: true }}
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
+        className="grid grid-cols-1 gap-8 sm:grid-cols-2"
+      >
+        {sortedProjects.map((project) => (
+          <motion.div
+            key={project.slug}
+            variants={FADE_UP_VARIANTS}
+          >
+            <ProjectCard
+              project={project}
+              onOpen={() => setSelectedProject(project)}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectDetailModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+/*
+ * A project's cover image.
+ *
+ * The cover used to be loaded with `unoptimized`, which tells Next to serve the file as it is.
+ * The one real cover in the repository is a 424 KB PNG, and that is what every visitor of the
+ * projects page downloaded. Letting the optimiser do its job serves a resized, compressed copy
+ * instead.
+ *
+ * The placeholder covers are empty files. The optimiser cannot read one, so the image falls back
+ * to the placeholder graphic -- the same thing the About section has always done.
+ */
+function ProjectCover({ cover, title }: { cover?: string; title: string }) {
+  const [src, setSrc] = useState(cover || "/assets/images/placeholder.svg");
+
+  return (
+    <Image
+      src={src}
+      alt={`Cover image for ${title}`}
+      fill
+      sizes="(min-width: 640px) 50vw, 100vw"
+      className="object-cover transition-transform duration-300 group-hover:scale-105"
+      onError={() => {
+        if (src !== "/assets/images/placeholder.svg") {
+          setSrc("/assets/images/placeholder.svg");
+        }
+      }}
+    />
+  );
+}
+
+function ProjectCard({
+  project,
+  onOpen,
+}: {
+  project: (typeof projects)[number];
+  onOpen: () => void;
+}) {
+  return (
+    <Link
+      href={project.url}
+      onClick={(e) => {
+        e.preventDefault();
+        onOpen();
+      }}
+      className="group hover:-translate-y-1 block h-full w-full transform rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300 ease-in-out hover:shadow-lg"
+    >
+      <article className="flex h-full flex-col">
+        <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
+          <ProjectCover
+            cover={project.cover}
+            title={project.title}
+          />
+        </div>
+        <div className="flex flex-1 flex-col p-6">
+          <h3 className="mb-2 font-semibold text-xl transition-colors group-hover:text-primary">
+            {project.title}
+          </h3>
+          <p className="line-clamp-3 grow text-base text-muted-foreground">{project.description}</p>
+          <div className="my-4 flex flex-wrap gap-2">
+            {project.tags.map((tag) => (
+              <Badge
+                key={tag}
+                variant="secondary"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+          <div className="mt-auto flex w-full items-center justify-between">
+            <span className="flex items-center font-semibold text-primary text-sm">
+              View Case Study <ArrowUpRight className="ml-1 h-4 w-4" />
+            </span>
+            <div className="flex items-center gap-2">
+              {/*
+                `preventDefault()` is the whole fix.
+
+                These buttons sit inside the card's `<Link>`. The previous onClick called only
+                `stopPropagation()`, which does not cancel the browser's default action -- so clicking
+                one opened the popup *and* followed the card link, navigating the user off the
+                projects list to the project detail. Verified in a browser: the URL became
+                /projects/Nargis alongside the popup.
+
+                ProjectsPreview and ProjectsPreviewAnimated both call preventDefault() and so never
+                had this bug; this is the copy that drifted.
+              */}
+              {project.repository && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  type="button"
+                  aria-label={`View source code for ${project.title}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(project.repository, "_blank", "noopener,noreferrer");
+                  }}
+                >
+                  <Github className="h-5 w-5" />
+                </Button>
+              )}
+              {project.liveUrl && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  type="button"
+                  aria-label={`View live site for ${project.title}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(project.liveUrl, "_blank", "noopener,noreferrer");
+                  }}
+                >
+                  <ArrowUpRight className="h-5 w-5" />
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </article>
+    </Link>
+  );
+}

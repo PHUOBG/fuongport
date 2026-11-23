@@ -1,0 +1,184 @@
+/**
+ * @file: src/hooks/useDataRain.ts
+ * @description: A highly performant, canvas-based "Matrix-style" data rain effect hook.
+ */
+"use client";
+
+import type { RefObject } from "react";
+import { useEffect, useRef } from "react";
+import { measureCanvas } from "@/lib/canvasSize";
+
+// --- Constants ---
+const ALPHABET =
+  "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789";
+const FONT_SIZE = 8;
+const STREAM_DENSITY = FONT_SIZE + 6; // Increased from 3 to 6 (20% less dense)
+
+// --- Class Definitions ---
+class RainSymbol {
+  character: string;
+  x: number;
+  y: number;
+  speed: number;
+  isFirst: boolean = false;
+  constructor(x: number, y: number, speed: number) {
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.character = this.getRandomChar();
+  }
+  private getRandomChar(): string {
+    return ALPHABET[Math.floor(Math.random() * ALPHABET.length)];
+  }
+  public draw(ctx: CanvasRenderingContext2D, primaryColor: string, accentColor: string) {
+    ctx.fillStyle = this.isFirst ? primaryColor : accentColor;
+    ctx.fillText(this.character, this.x, this.y);
+  }
+  public rain(canvasHeight: number) {
+    this.y = this.y >= canvasHeight ? 0 : this.y + this.speed;
+  }
+}
+
+class Stream {
+  symbols: RainSymbol[] = [];
+  totalSymbols: number;
+  speed: number;
+  constructor(x: number, canvasHeight: number) {
+    this.speed = Math.random() * 2 + 2;
+    this.totalSymbols = Math.round(Math.random() * 20 + 5);
+    this.generateSymbols(x, canvasHeight);
+  }
+  private generateSymbols(x: number, canvasHeight: number) {
+    let y = Math.random() * canvasHeight - canvasHeight;
+    for (let i = 0; i < this.totalSymbols; i++) {
+      const symbol = new RainSymbol(x, y, this.speed);
+      this.symbols.push(symbol);
+      y -= FONT_SIZE;
+    }
+    if (this.symbols.length > 0) this.symbols[0].isFirst = true;
+  }
+  public render(
+    ctx: CanvasRenderingContext2D,
+    canvasHeight: number,
+    primaryColor: string,
+    accentColor: string
+  ) {
+    this.symbols.forEach((symbol) => {
+      symbol.draw(ctx, primaryColor, accentColor);
+      symbol.rain(canvasHeight);
+    });
+  }
+}
+
+// --- The Custom Hook ---
+// THE DEFINITIVE FIX: The function signature now accepts a RefObject where the generic
+// type itself can be null, perfectly matching the type provided by the component.
+export const useDataRain = (canvasRef: RefObject<HTMLCanvasElement | null>) => {
+  const streamsRef = useRef<Stream[]>([]);
+  const animationFrameId = useRef<number>(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return; // This guard clause correctly handles the null case.
+
+    /*
+     * No `willReadFrequently`: that flag tells the browser the canvas will be *read back*, and
+     * Chrome answers by moving it to the software rasteriser. This canvas only ever draws, and
+     * the software path is slower for drawing than the GPU one.
+     */
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const style = getComputedStyle(document.documentElement);
+    const primaryColor = `hsl(${style.getPropertyValue("--primary").trim()})`;
+    const accentColor = `hsl(${style.getPropertyValue("--accent").trim()})`;
+    const backgroundColor = `hsla(${style.getPropertyValue("--background").trim()} / 0.1)`;
+
+    const getDpr = () => Math.min(window.devicePixelRatio || 1, 1.5);
+
+    let cssWidth = 0;
+    let cssHeight = 0;
+
+    const setup = () => {
+      const dpr = getDpr();
+      /*
+       * The canvas' own box, not the window's.
+       *
+       * The rear layer of the cyberpunk rain is only visible in the top band of the screen, and
+       * the canvas used to be sized to the whole window and then clipped: two thirds of its
+       * backing store, and of the clear that happens on every frame, was drawn and thrown away.
+       * Sizing the canvas to itself means the invisible part is never allocated at all.
+       */
+      const size = measureCanvas(canvas, { width: window.innerWidth, height: window.innerHeight });
+      cssWidth = size.width;
+      cssHeight = size.height;
+      canvas.width = Math.floor(cssWidth * dpr);
+      canvas.height = Math.floor(cssHeight * dpr);
+
+      // Prevent cumulative scaling on re-setup.
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
+
+      streamsRef.current = [];
+      const streamCount = Math.floor(cssWidth / STREAM_DENSITY);
+      for (let i = 0; i < streamCount; i++) {
+        streamsRef.current.push(new Stream(i * STREAM_DENSITY, cssHeight));
+      }
+      ctx.font = `bold ${FONT_SIZE}px monospace`;
+    };
+
+    let stopped = false;
+
+    const animate = () => {
+      if (stopped) return;
+
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(0, 0, cssWidth, cssHeight);
+      streamsRef.current.forEach((stream) => {
+        stream.render(ctx, cssHeight, primaryColor, accentColor);
+      });
+      animationFrameId.current = requestAnimationFrame(animate);
+    };
+
+    const start = () => {
+      stopped = false;
+      cancelAnimationFrame(animationFrameId.current);
+      animationFrameId.current = requestAnimationFrame(animate);
+    };
+
+    const stop = () => {
+      stopped = true;
+      cancelAnimationFrame(animationFrameId.current);
+    };
+
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const debouncedSetup = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      stop();
+      timeoutId = setTimeout(() => {
+        setup();
+        start();
+      }, 250);
+    };
+
+    debouncedSetup();
+    window.addEventListener("resize", debouncedSetup);
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        stop();
+      } else {
+        // Ensure dimensions are current after tab switches.
+        debouncedSetup();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      stop();
+      window.removeEventListener("resize", debouncedSetup);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [canvasRef]);
+};

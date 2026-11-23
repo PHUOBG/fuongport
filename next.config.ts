@@ -1,0 +1,77 @@
+import { createRequire } from "node:module";
+import type { NextConfig } from "next";
+
+const isProd = process.env.NODE_ENV === "production";
+
+const nextConfig: NextConfig = {
+  pageExtensions: ["js", "jsx", "ts", "tsx"],
+  // `resend` is a server-only SDK and pulls in a sizeable dependency tree of its own. Bundling it
+  // into the route handler added ~216 KB of server code that is never used in the browser and never
+  // benefits from bundling: it is a Node library, loaded from node_modules at runtime.
+  serverExternalPackages: ["resend"],
+  async headers() {
+    // Disable CSP/security headers in dev to unblock react-refresh (unsafe-eval not needed in prod build output)
+    if (!isProd) return [];
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          // HTTPS-only guarantee: dev serves without TLS, so this would poison the browser cache /
+          // force HTTPS for local URLs. Production deploys terminate TLS at the edge.
+          { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+      {
+        source: "/assets/(.*)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      { source: "/github", destination: "https://github.com/PHUOBG", permanent: true },
+      {
+        source: "/linkedin",
+        destination: "https://www.linkedin.com/in/ng%E1%BB%8Dc-ph%C6%B0%C6%A1ng-7a6267411",
+        permanent: true,
+      },
+      {
+        source: "/facebook",
+        destination: "https://www.facebook.com/phuong0v0",
+        permanent: true,
+      },
+      { source: "/cv", destination: "https://canva.link/cv-cua-fuong", permanent: false },
+      { source: "/blogs", destination: "/blog", permanent: true },
+      { source: "/blogs/:slug*", destination: "/blog/:slug*", permanent: true },
+    ];
+  },
+  images: {
+    formats: ["image/avif", "image/webp"],
+    qualities: [75, 95],
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "cdn.sanity.io" },
+    ],
+  },
+  reactStrictMode: true,
+  poweredByHeader: false,
+};
+
+// Keep bundle analyzer optional so it doesn't bloat production installs.
+// NOTE: Next transpiles TS config and loads it via require(), so we must avoid top-level await.
+const withBundleAnalyzer = (() => {
+  if (process.env.ANALYZE !== "true") return (config: NextConfig) => config;
+  const require = createRequire(import.meta.url);
+  const mod = require("@next/bundle-analyzer");
+  // The package is a CommonJS module whose export *is* the wrapper function, so `mod.default` is
+  // undefined and calling it threw `TypeError: mod.default is not a function` -- which made
+  // `bun run analyze` fail the build outright. Handle both shapes.
+  const wrap = typeof mod === "function" ? mod : mod.default;
+  return wrap({ enabled: true }) as (config: NextConfig) => NextConfig;
+})();
+
+export default withBundleAnalyzer(nextConfig);

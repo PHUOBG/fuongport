@@ -1,0 +1,22 @@
+# src/content/bio/index.yml
+
+# Personal Information
+name: Ngoc Phuong
+fullName: Hoang Thi Ngoc Phuong
+title: "Software Engineer | AI & Computer Vision Engineer"
+location: "Da Nang, Viet Nam"
+email: hoangngocphuongcute@gmail.com
+
+# The "Hero Section" Content
+tagline: "Become someone who creates value and improves every day"
+summary: >
+  Experienced in building full-stack web applications, APIs, and automation tools.
+  I thrive on turning complex problems into elegant solutions and am always eager
+  to learn and contribute to impactful projects.
+resume: "https://canva.link/cv-cua-fuong"
+
+# Social & Professional Links
+social:
+  github: https://github.com/PHUOBG
+  linkedin: https://www.linkedin.com/in/ng%E1%BB%8Dc-ph%C6%B0%C6%A1ng-7a6267411
+  facebook: https://www.facebook.com/phuong0v0

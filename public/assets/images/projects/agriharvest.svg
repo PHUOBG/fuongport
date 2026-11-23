@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none">
+  <defs>
+    <linearGradient id="ah-bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#042f2e" />
+      <stop offset="55%" stop-color="#064e3b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <radialGradient id="ah-glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(920 315) scale(360)">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.34" />
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ah-bg)" />
+  <rect width="1200" height="630" fill="url(#ah-glow)" />
+  <g stroke="#10b981" stroke-opacity="0.14" stroke-width="1">
+    <path d="M0 105H1200M0 210H1200M0 315H1200M0 420H1200M0 525H1200" />
+    <path d="M150 0V630M300 0V630M450 0V630M600 0V630M750 0V630M900 0V630M1050 0V630" />
+  </g>
+  <g transform="translate(905 305)">
+    <rect x="-125" y="-125" width="250" height="250" rx="28" fill="#022c22" fill-opacity="0.7" stroke="#10b981" stroke-opacity="0.45" stroke-width="2" />
+    <path d="M-95 -65V-95H-65M65 -95H95V-65M-95 65V95H-65M65 95H95V65" stroke="#34d399" stroke-width="4" stroke-linecap="round" />
+    <circle cx="0" cy="0" r="56" stroke="#2dd4bf" stroke-width="3" stroke-dasharray="8 8" />
+    <circle cx="0" cy="0" r="28" fill="#10b981" fill-opacity="0.22" stroke="#6ee7b7" stroke-width="2.5" />
+    <path d="M-14 0C-14 -16 0 -24 14 -16C14 0 0 14 -14 0Z" fill="#34d399" />
+    <path d="M0 0V20" stroke="#a7f3d0" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M-85 0H-56M56 0H85M0 -85V-56M0 56V85" stroke="#34d399" stroke-opacity="0.6" stroke-width="2" />
+    <rect x="-76" y="-82" width="52" height="18" rx="4" fill="#10b981" fill-opacity="0.85" />
+    <text x="-50" y="-69" text-anchor="middle" fill="#022c22" font-family="monospace" font-size="11" font-weight="700">98.4%</text>
+  </g>
+  <rect x="88" y="138" width="290" height="36" rx="18" fill="#059669" fill-opacity="0.35" stroke="#34d399" stroke-opacity="0.6" />
+  <text x="233" y="162" text-anchor="middle" fill="#d1fae5" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" letter-spacing="1.1">TOP 12 · AIoT INNOWORKS 2026</text>
+  <text x="88" y="268" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="74" font-weight="800" letter-spacing="-1.5">AgriHarvest AI</text>
+  <text x="88" y="328" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="500">AI-Powered Autonomous Crop Harvesting Robot</text>
+  <g transform="translate(88 390)" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600">
+    <rect x="0" y="0" width="176" height="40" rx="10" fill="#064e3b" stroke="#10b981" stroke-opacity="0.55" />
+    <text x="88" y="26" text-anchor="middle" fill="#6ee7b7">Computer Vision</text>
+    <rect x="192" y="0" width="136" height="40" rx="10" fill="#064e3b" stroke="#10b981" stroke-opacity="0.55" />
+    <text x="260" y="26" text-anchor="middle" fill="#5eead4">AIoT Edge</text>
+    <rect x="344" y="0" width="128" height="40" rx="10" fill="#064e3b" stroke="#10b981" stroke-opacity="0.55" />
+    <text x="408" y="26" text-anchor="middle" fill="#a7f3d0">Robotics</text>
+  </g>
+  <text x="88" y="538" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="20">AI Vision Lead · 1 Software &amp; 4 Hardware Members · ModelAI_DUTharvest</text>
+</svg>
+

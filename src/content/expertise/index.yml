@@ -1,0 +1,429 @@
+categories:
+  - name: "Programming Languages"
+    icon: "Code"
+    skills:
+      - name: "Python"
+        iconPath: "/assets/icons/python.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "AI & Computer Vision"
+          - "FastAPI Backend APIs"
+          - "Automation & Scripting"
+        details: "Core language across my AI & Computer Vision workflows, machine learning pipelines, and FastAPI services. I use Python to build intelligent systems ranging from real-time agricultural vision models to LLM-powered backends."
+        rationale: "Python combines rapid prototyping with a deep ecosystem for AI/ML, Computer Vision, and typed async web services."
+        highlights:
+          - "Led AI Vision model development for the AgriHarvest autonomous harvesting robot."
+          - "Built type-safe APIs and AI inference backends using FastAPI and uv."
+        ecosystem:
+          - "Frameworks: FastAPI, SQLAlchemy"
+          - "AI/ML: PyTorch, OpenCV, LangGraph"
+          - "Tooling: uv, Pydantic"
+        projectSlugs: ["agriharvest", "voiceturk"]
+
+      - name: "TypeScript"
+        iconPath: "/assets/icons/typescript.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "Type-Safe Web Apps"
+          - "React & Next.js UIs"
+          - "Frontend Architecture"
+        details: "Primary language for building maintainable front-end applications and interactive product experiences with React and Next.js. I rely on strict types and clean component contracts to ship UI features reliably with teams."
+        rationale: "TypeScript prevents entire classes of runtime bugs and makes collaborative front-end iteration fast and predictable."
+        highlights:
+          - "Built responsive, user-centered front-end features during my internship at Gimme Idea."
+          - "Developed structured UI flows for the FairInsight legal reasoning platform."
+        ecosystem:
+          - "Frameworks: Next.js, React, Vue"
+          - "Backend: Express"
+          - "Validation: Zod"
+        projectSlugs: ["fairinsight", "voiceturk"]
+
+      - name: "JavaScript"
+        iconPath: "/assets/icons/javascript.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "Modern ES202x Syntax"
+          - "Interactive DOM & Web APIs"
+          - "Full-Stack JS Ecosystem"
+        details: "Solid foundation in modern JavaScript across browser interfaces, async API integration, and Express-based server routes for web applications and hackathon prototypes."
+        rationale: "Mastering core JavaScript enables seamless movement across React, Next.js, Vue, and Node/Express codebases."
+        highlights:
+          - "Built interactive client-side state and API integrations for startup and hackathon apps."
+        ecosystem:
+          - "Frontend: React, Next.js, Vue"
+          - "Backend: Express, REST APIs"
+        projectSlugs: ["fairinsight", "voiceturk"]
+
+      - name: "C#"
+        iconPath: "/assets/icons/csharp.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Object-Oriented Design"
+          - "ASP.NET Core Services"
+          - "SQL Server Integration"
+        details: "Developing structured backend APIs and enterprise-style web applications using C# and the .NET ecosystem, pairing strong static typing with relational databases."
+        rationale: "C# and .NET provide robust enterprise patterns, clean LINQ data querying, and high-throughput web APIs."
+        highlights:
+          - "Built RESTful backend endpoints with ASP.NET Core and SQL Server."
+        ecosystem:
+          - "Framework: ASP.NET Core"
+          - "Database: SQL Server"
+        projectSlugs: []
+
+      - name: "C/C++"
+        iconPath: "/assets/icons/c++.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Data Structures & Algorithms"
+          - "Memory & Performance Basics"
+          - "Hardware-Adjacent Logic"
+        details: "Coursework and foundational problem-solving in C and C++, strengthening understanding of algorithms, pointers, memory layout, and performance-critical execution."
+        rationale: "C/C++ deepens computer science fundamentals and bridges software logic with robotics and embedded AIoT hardware."
+        highlights:
+          - "Implemented core data structures and algorithmic solutions in university labs."
+        ecosystem:
+          - "Domains: Algorithms, Embedded & AIoT"
+        projectSlugs: ["agriharvest"]
+
+      - name: "Java"
+        iconPath: "/assets/icons/java.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "OOP Architecture"
+          - "Strongly Typed Systems"
+          - "Application Fundamentals"
+        details: "Academic and project experience applying object-oriented principles, interfaces, and modular software design patterns in Java."
+        rationale: "Java reinforces clean object-oriented thinking and disciplined software engineering architecture."
+        highlights:
+          - "Practiced clean class hierarchies, collections, and modular application structure."
+        ecosystem:
+          - "Focus: OOP, Enterprise Fundamentals"
+        projectSlugs: []
+
+  - name: "Frontend & UI/UX"
+    icon: "Feather"
+    skills:
+      - name: "React"
+        iconPath: "/assets/icons/react.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "Reusable Component Systems"
+          - "State & Hooks Patterns"
+          - "Responsive User Interfaces"
+        details: "Building clean, component-driven web interfaces with React, focusing on clarity, accessibility, and responsive layouts across real user products and hackathon builds."
+        rationale: "React makes complex interactive interfaces composable and easy for multi-person teams to evolve."
+        highlights:
+          - "Refined UI usability and front-end workflows at Gimme Idea."
+          - "Implemented interactive views for FairInsight and VoiceTurk."
+        ecosystem:
+          - "Meta-Framework: Next.js"
+          - "Styling: Tailwind CSS"
+        projectSlugs: ["fairinsight", "voiceturk"]
+
+      - name: "Next.js"
+        iconPath: "/assets/icons/nextjs.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "App Router Architecture"
+          - "Server & Client Components"
+          - "Full-Stack Web Delivery"
+        details: "Developing full-stack web applications using Next.js App Router, combining fast server rendering with smooth client-side navigation and API integration."
+        rationale: "Next.js gives product teams routing, SSR/SSG performance, and React UI composition in one cohesive framework."
+        highlights:
+          - "Built and iterated front-end product pages with Next.js and TypeScript."
+        ecosystem:
+          - "UI: React, Tailwind CSS"
+          - "Edge: Cloudflare"
+        projectSlugs: ["fairinsight", "voiceturk"]
+
+      - name: "Vue"
+        iconPath: "/assets/icons/vue.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Reactive Single-File Components"
+          - "Template & Composition API"
+          - "Rapid UI Prototyping"
+        details: "Learning and building front-end views with Vue's reactive data binding and single-file component model to broaden front-end versatility."
+        rationale: "Vue offers approachable reactivity and clean template structure for fast UI delivery."
+        ecosystem:
+          - "Language: TypeScript, JavaScript"
+        projectSlugs: []
+
+      - name: "Tailwind CSS"
+        iconPath: "/assets/icons/tailwind.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "Design System Tokens"
+          - "Responsive Breakpoints"
+          - "UI/UX Rapid Prototyping"
+        details: "Translating UI/UX concepts directly into polished, responsive interfaces with utility-first styling and consistent visual hierarchy."
+        rationale: "Tailwind CSS accelerates UI/UX iteration while keeping design spacing, typography, and color tokens cohesive."
+        highlights:
+          - "Crafted user-friendly layouts and visual systems for FairInsight and startup prototypes."
+        ecosystem:
+          - "Pairings: Next.js, React, Figma-to-Code"
+        projectSlugs: ["fairinsight", "voiceturk"]
+
+  - name: "Backend & APIs"
+    icon: "Server"
+    skills:
+      - name: "FastAPI"
+        iconPath: "/assets/icons/fastapi.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "High-Speed Python APIs"
+          - "Pydantic Validation"
+          - "OpenAPI / Swagger Docs"
+        details: "Building async Python backend APIs for AI services, model inference, and structured data workflows with automatic Swagger/OpenAPI documentation."
+        rationale: "FastAPI bridges Python's AI ecosystem with production-ready REST endpoints and self-documenting schemas."
+        highlights:
+          - "Exposed AI and application services through clean, validated REST endpoints."
+        ecosystem:
+          - "ORM: SQLAlchemy"
+          - "Docs: Swagger/OpenAPI"
+          - "Tooling: uv"
+        projectSlugs: ["voiceturk"]
+
+      - name: "ASP.NET Core"
+        iconPath: "/assets/icons/dotnet.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "RESTful Web APIs"
+          - "Dependency Injection"
+          - "C# Service Architecture"
+        details: "Exploring structured backend API design with ASP.NET Core, middleware pipelines, and relational data access backed by SQL Server."
+        rationale: "ASP.NET Core offers strong performance, clean architecture conventions, and mature enterprise tooling."
+        ecosystem:
+          - "Language: C#"
+          - "Database: SQL Server"
+        projectSlugs: []
+
+      - name: "Express"
+        iconPath: "/assets/icons/express.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "REST Endpoint Routing"
+          - "Middleware Composition"
+          - "Lightweight Node Backends"
+        details: "Building lightweight Node.js APIs and service integrations with Express for fast web application backends and hackathon demos."
+        rationale: "Express stays minimal and flexible when standing up JavaScript/TypeScript APIs quickly."
+        ecosystem:
+          - "Runtime: Node.js"
+          - "Integration: REST APIs"
+        projectSlugs: []
+
+      - name: "REST APIs & SQLAlchemy"
+        iconPath: "/assets/icons/rest-api.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "Resource-Oriented Contracts"
+          - "SQLAlchemy ORM Modeling"
+          - "Client-Server Integration"
+        details: "Designing predictable REST API contracts, integrating frontend apps with backend endpoints, and modeling relational persistence with SQLAlchemy in Python."
+        rationale: "Clean API contracts and typed ORM layers keep frontend, backend, and AI components decoupled and reliable."
+        ecosystem:
+          - "Docs: Swagger/OpenAPI"
+          - "DB: PostgreSQL, SQL Server"
+        projectSlugs: ["fairinsight", "voiceturk"]
+
+  - name: "AI & Computer Vision"
+    icon: "Brain"
+    skills:
+      - name: "Computer Vision"
+        iconPath: "/assets/icons/computer-vision.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "Object Detection & Localization"
+          - "Real-Time Inference"
+          - "Robotics & AIoT Vision"
+        details: "Serving as AI Vision Lead on autonomous robotics projects, training and tuning vision models to detect crops and guide physical harvesting hardware in real-world conditions."
+        rationale: "Computer Vision connects machine intelligence directly to physical environments and automation."
+        highlights:
+          - "Led the Computer Vision pipeline for AgriHarvest AI (Top 12 — AIoT Developer InnoWorks 2026)."
+          - "Coordinated vision outputs with 1 software and 4 hardware team members."
+        ecosystem:
+          - "Language: Python"
+          - "Hardware: AIoT & Edge Cameras"
+        projectSlugs: ["agriharvest"]
+
+      - name: "Machine Learning & Deep Learning"
+        iconPath: "/assets/icons/ai-ml.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "Model Training & Evaluation"
+          - "Neural Network Pipelines"
+          - "Dataset Curation"
+        details: "Applying supervised ML and deep neural networks across visual perception and language tasks, iterating from dataset preparation to real-time model evaluation."
+        rationale: "Strong ML/DL fundamentals make it possible to adapt architectures reliably to real-world constraints."
+        highlights:
+          - "Trained and evaluated domain-specific vision models for autonomous harvesting."
+        ecosystem:
+          - "Core: Python, Deep Learning"
+        projectSlugs: ["agriharvest"]
+
+      - name: "LLM & Agentic AI"
+        iconPath: "/assets/icons/llm.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Multi-Step Agent Workflows"
+          - "Structured Reasoning Prompts"
+          - "AI Product Integration"
+        details: "Studying and building LLM-powered applications and agentic workflows that turn natural language and domain context into actionable user experiences."
+        rationale: "Agentic LLM architectures unlock reasoning, tool-use, and voice-driven interfaces beyond static forms."
+        highlights:
+          - "Collaborated on AI-powered voice interaction and legal reasoning products."
+        ecosystem:
+          - "Orchestration: LangGraph, RAG"
+        projectSlugs: ["fairinsight", "voiceturk"]
+
+      - name: "RAG & LangGraph"
+        iconPath: "/assets/icons/rag.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Stateful Graph Orchestration"
+          - "Vector Context Retrieval"
+          - "Grounded AI Responses"
+        details: "Exploring Retrieval-Augmented Generation paired with LangGraph state machines and pgvector storage to ground LLM outputs in verified domain documents."
+        rationale: "Combining RAG with stateful graphs keeps AI reasoning accurate, traceable, and domain-grounded."
+        ecosystem:
+          - "Vector Store: pgvector, PostgreSQL"
+        projectSlugs: ["fairinsight"]
+
+      - name: "NLP & Embeddings"
+        iconPath: "/assets/icons/nlp.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Semantic Text Embeddings"
+          - "Text Processing & Intent"
+          - "Conversational AI Flows"
+        details: "Learning natural language processing techniques, vector embeddings, and conversational understanding to power voice interaction and semantic search systems."
+        rationale: "Embeddings and NLP form the bridge between raw human text/voice and semantic machine retrieval."
+        ecosystem:
+          - "Applications: Voice AI, Semantic Search"
+        projectSlugs: ["voiceturk", "fairinsight"]
+
+  - name: "Databases"
+    icon: "Database"
+    skills:
+      - name: "PostgreSQL & pgvector"
+        iconPath: "/assets/icons/postgresql.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Relational Schema Design"
+          - "pgvector Similarity Search"
+          - "SQLAlchemy Integration"
+        details: "Using PostgreSQL for structured relational storage alongside the pgvector extension for storing embeddings and running semantic similarity queries in AI applications."
+        rationale: "PostgreSQL + pgvector unifies transactional application data and vector search inside a single reliable database."
+        ecosystem:
+          - "ORM: SQLAlchemy"
+          - "Use-cases: RAG, Embeddings"
+        projectSlugs: ["fairinsight"]
+
+      - name: "SQL Server"
+        iconPath: "/assets/icons/sqlserver.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Relational Data Modeling"
+          - "T-SQL Querying"
+          - ".NET Data Integration"
+        details: "Working with Microsoft SQL Server for relational schema design, structured querying, and backend persistence alongside C# and ASP.NET Core."
+        rationale: "SQL Server pairs seamlessly with .NET enterprise stacks and structured business datasets."
+        ecosystem:
+          - "Stack: C#, ASP.NET Core"
+        projectSlugs: []
+
+  - name: "DevOps, Cloud & Tools"
+    icon: "Cloud"
+    skills:
+      - name: "Docker"
+        iconPath: "/assets/icons/docker.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Containerized Services"
+          - "Reproducible Environments"
+          - "Local-to-VPS Parity"
+        details: "Packaging web backends, AI services, and databases in containers for consistent execution across development machines and Linux VPS deployments."
+        rationale: "Docker eliminates environment drift between team members and cloud servers."
+        ecosystem:
+          - "Targets: Linux/VPS, DigitalOcean"
+        projectSlugs: []
+
+      - name: "GitHub Actions"
+        iconPath: "/assets/icons/githubactions.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Automated CI Checks"
+          - "Build & Lint Pipelines"
+          - "Team Workflow Automation"
+        details: "Configuring automated CI checks and deployment workflows on GitHub repositories to catch regressions early across team pull requests."
+        rationale: "Automated checks keep multi-member hackathon and startup repositories clean and deployable."
+        ecosystem:
+          - "Platform: Git & GitHub"
+        projectSlugs: []
+
+      - name: "Linux / VPS"
+        iconPath: "/assets/icons/linux.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Shell & Process Management"
+          - "Server Deployment Basics"
+          - "Environment Configuration"
+        details: "Managing Linux command-line workflows and virtual private servers for hosting web services, APIs, and AI workloads."
+        rationale: "Comfort in Linux environments is essential for deploying and debugging cloud applications."
+        ecosystem:
+          - "Cloud: DigitalOcean, Docker"
+        projectSlugs: []
+
+      - name: "DigitalOcean"
+        iconPath: "/assets/icons/digitalocean.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Droplet Server Hosting"
+          - "App & API Deployment"
+          - "Cloud Infrastructure"
+        details: "Deploying and running full-stack prototypes and API services on DigitalOcean cloud droplets."
+        rationale: "DigitalOcean provides straightforward cloud compute for shipping student startups and team projects."
+        ecosystem:
+          - "Infra: Linux/VPS, Docker"
+        projectSlugs: []
+
+      - name: "Cloudflare"
+        iconPath: "/assets/icons/cloudflare.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "DNS & Edge Routing"
+          - "SSL/TLS & Security"
+          - "Edge Performance"
+        details: "Using Cloudflare for DNS management, edge caching, TLS security, and fast global delivery of web applications."
+        rationale: "Cloudflare adds edge reliability and protection with minimal operational overhead."
+        ecosystem:
+          - "Stack: Next.js, VPS Hosting"
+        projectSlugs: []
+
+      - name: "Git & GitHub"
+        iconPath: "/assets/icons/git.svg"
+        level: "Experienced"
+        keyCompetencies:
+          - "Branching & Pull Requests"
+          - "Team Code Collaboration"
+          - "Open-Source Workflows"
+        details: "Collaborating daily across 4-to-12-member engineering teams using Git branching, pull requests, and issue tracking on GitHub."
+        rationale: "Disciplined Git workflows keep cross-functional software, AI, and hardware teams synchronized."
+        highlights:
+          - "Collaborated across multi-member club and competition repos (dscdut, DSUC, and personal orgs)."
+        ecosystem:
+          - "CI: GitHub Actions"
+        projectSlugs: ["fairinsight", "agriharvest", "voiceturk"]
+
+      - name: "uv & Swagger/OpenAPI"
+        iconPath: "/assets/icons/uv.svg"
+        level: "Familiar"
+        keyCompetencies:
+          - "Fast Python Dependency Mgmt"
+          - "Interactive API Specs"
+          - "Backend Developer Experience"
+        details: "Using uv for fast Python virtual environments and dependency resolution, paired with Swagger/OpenAPI for documenting and testing REST endpoints."
+        rationale: "uv and OpenAPI make Python backend setups reproducible and instantly testable for frontend collaborators."
+        ecosystem:
+          - "Pairings: Python, FastAPI, REST APIs"
+        projectSlugs: []

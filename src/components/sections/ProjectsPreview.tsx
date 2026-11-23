@@ -1,0 +1,202 @@
+"use client";
+import { AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { projects } from "#velite";
+import { GithubIcon as Github } from "@/components/icons/GithubIcon";
+import { ProjectDetailModal, type ProjectModalItem } from "@/components/layout/ProjectDetailModal";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { useSectionMotion } from "@/hooks/useSectionMotion";
+import { ROUTES } from "@/lib/routes";
+
+const ProjectsPreviewAnimated = dynamic(
+  () => import("./ProjectsPreviewAnimated").then((m) => m.ProjectsPreviewAnimated),
+  { ssr: false }
+);
+
+export function ProjectsPreview() {
+  const sectionMotion = useSectionMotion();
+  const [selectedProject, setSelectedProject] = useState<ProjectModalItem | null>(null);
+
+  if (sectionMotion) {
+    return <ProjectsPreviewAnimated />;
+  }
+
+  const featuredProjects = [...projects]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
+
+  return (
+    <section
+      className="mx-auto w-full max-w-7xl px-4 py-16"
+      data-section="projects-preview"
+    >
+      <div className="mb-12 text-center">
+        <h2 className="font-bold text-4xl">Featured Projects</h2>
+        <p className="mt-2 text-lg text-muted-foreground">
+          A selection of my work. See what I've been building.
+        </p>
+      </div>
+
+      {/* --- PROJECTS GRID --- */}
+      <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            key={project.title}
+            url={project.url}
+            title={project.title}
+            description={project.description ?? ""}
+            cover={project.cover}
+            tags={project.tags}
+            liveUrl={project.liveUrl}
+            repository={project.repository}
+            onOpen={() => setSelectedProject(project)}
+          />
+        ))}
+      </div>
+
+      {/* --- VIEW ALL PROJECTS BUTTON --- */}
+      <div className="mt-16 text-center">
+        <Button
+          asChild
+          size="lg"
+        >
+          <Link href={ROUTES.projects}>View All Projects</Link>
+        </Button>
+      </div>
+
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectDetailModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
+// --- WORLD-CLASS SUB-COMPONENT for Project Cards ---
+// This makes the main component cleaner and the card logic reusable.
+interface ProjectCardProps {
+  url: string;
+  title: string;
+  description: string;
+  cover?: string;
+  tags?: string[];
+  liveUrl?: string;
+  repository?: string;
+  onOpen: () => void;
+}
+
+function ProjectCard({
+  url,
+  title,
+  description,
+  cover,
+  tags,
+  liveUrl,
+  repository,
+  onOpen,
+}: ProjectCardProps) {
+  // Single outer interactive element (anchor). Internal icon actions converted to buttons to avoid nested <a>.
+  return (
+    <Link
+      href={url}
+      onClick={(e) => {
+        e.preventDefault();
+        onOpen();
+      }}
+      aria-label={`View project ${title}`}
+      className="group hover:-translate-y-1 block h-full w-full transform rounded-xl border bg-card text-card-foreground shadow-sm transition-all duration-300 ease-in-out hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70"
+    >
+      <div className="flex h-full flex-col">
+        {/* --- COVER IMAGE --- */}
+        <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
+          <Image
+            src={cover || "/assets/images/placeholder.svg"}
+            alt={`Cover image for ${title}`}
+            fill
+            loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            onError={(e) => {
+              const target = e.currentTarget as HTMLImageElement;
+              if (!target.dataset.fallback) {
+                target.dataset.fallback = "1";
+                target.src = "/assets/images/placeholder.svg";
+              }
+            }}
+          />
+        </div>
+
+        <div className="flex flex-1 flex-col p-6">
+          <h3 className="mb-2 font-semibold text-xl">{title}</h3>
+          <p className="line-clamp-3 grow text-muted-foreground text-sm">{description}</p>
+
+          {/* --- TAGS --- */}
+          <div className="my-4 flex flex-wrap gap-2">
+            {tags?.map((tag: string) => (
+              <Badge
+                key={tag}
+                variant="secondary"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+
+          {/* --- ACTION CONTROLS (no nested anchors) --- */}
+          <div className="mt-auto flex w-full items-center justify-between">
+            <span className="flex items-center font-medium text-primary text-sm">
+              Read Case Study <ArrowUpRight className="ml-1 h-4 w-4" />
+            </span>
+            <div className="flex items-center gap-2">
+              {repository && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`View source code for ${title}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(repository, "_blank", "noopener,noreferrer");
+                  }}
+                >
+                  <Github
+                    aria-hidden="true"
+                    focusable="false"
+                    className="h-5 w-5"
+                  />
+                </Button>
+              )}
+              {liveUrl && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`View live site for ${title}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open(liveUrl, "_blank", "noopener,noreferrer");
+                  }}
+                >
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    focusable="false"
+                    className="h-5 w-5"
+                  />
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}

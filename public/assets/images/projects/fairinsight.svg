@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none">
+  <defs>
+    <linearGradient id="fi-bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#312e81" />
+    </linearGradient>
+    <radialGradient id="fi-glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(920 180) rotate(135) scale(480 420)">
+      <stop offset="0%" stop-color="#818cf8" stop-opacity="0.38" />
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="fi-accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#a78bfa" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#fi-bg)" />
+  <rect width="1200" height="630" fill="url(#fi-glow)" />
+  <g stroke="#6366f1" stroke-opacity="0.14" stroke-width="1">
+    <path d="M0 105H1200M0 210H1200M0 315H1200M0 420H1200M0 525H1200" />
+    <path d="M150 0V630M300 0V630M450 0V630M600 0V630M750 0V630M900 0V630M1050 0V630" />
+  </g>
+  <g transform="translate(880 280)" stroke="url(#fi-accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="0" cy="0" r="130" stroke-opacity="0.22" stroke-dasharray="10 10" />
+    <circle cx="0" cy="0" r="95" stroke-opacity="0.35" />
+    <path d="M0 -72V72" />
+    <path d="M-46 72H46" />
+    <path d="M-66 -44H66" />
+    <path d="M-66 -44L-92 14H-40L-66 -44Z" fill="#38bdf8" fill-opacity="0.18" />
+    <path d="M66 -44L40 14H92L66 -44Z" fill="#a78bfa" fill-opacity="0.18" />
+    <path d="M-92 14C-92 28 -40 28 -40 14" />
+    <path d="M40 14C40 28 92 28 92 14" />
+    <circle cx="0" cy="-72" r="8" fill="#38bdf8" />
+  </g>
+  <rect x="88" y="138" width="218" height="36" rx="18" fill="#4f46e5" fill-opacity="0.35" stroke="#818cf8" stroke-opacity="0.6" />
+  <text x="197" y="162" text-anchor="middle" fill="#e0e7ff" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" letter-spacing="1.2">UTE STARTUP 2026</text>
+  <text x="88" y="268" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="78" font-weight="800" letter-spacing="-1.5">FairInsight</text>
+  <text x="88" y="328" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="500">AI-Powered Legal Positioning &amp; Reasoning System</text>
+  <g transform="translate(88 390)" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600">
+    <rect x="0" y="0" width="136" height="40" rx="10" fill="#1e293b" stroke="#475569" />
+    <text x="68" y="26" text-anchor="middle" fill="#7dd3fc">UI/UX Design</text>
+    <rect x="152" y="0" width="152" height="40" rx="10" fill="#1e293b" stroke="#475569" />
+    <text x="228" y="26" text-anchor="middle" fill="#c4b5fd">Next.js &amp; TS</text>
+    <rect x="320" y="0" width="146" height="40" rx="10" fill="#1e293b" stroke="#475569" />
+    <text x="393" y="26" text-anchor="middle" fill="#93c5fd">LegalTech AI</text>
+  </g>
+  <text x="88" y="538" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="20">Google Developer Groups on Campus – DUT · Finalist at UTE Startup 2026</text>
+</svg>
+

@@ -1,0 +1,148 @@
+import { ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { blogs } from "#velite";
+import { MdxContent } from "@/components/layout/MdxContent";
+import { ArticleJsonLd } from "@/components/seo/ArticleJsonLd";
+import { Badge } from "@/components/ui/Badge";
+import { ROUTES } from "@/lib/routes";
+import { absoluteUrl } from "@/lib/site";
+
+interface BlogPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+// --- WORLD-CLASS METADATA for SEO & Social Sharing ---
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
+  const resolvedParams = await params;
+  const slugParam =
+    typeof resolvedParams?.slug === "string" ? resolvedParams.slug.toLowerCase() : "";
+  const blog = blogs.find((b) =>
+    typeof b?.slug === "string" ? b.slug.toLowerCase() === slugParam : false
+  );
+  if (!blog) {
+    return {};
+  }
+
+  const ogImage = blog.cover ? absoluteUrl(blog.cover) : absoluteUrl("/og-image.png");
+
+  return {
+    title: blog.title,
+    description: blog.description,
+    openGraph: {
+      title: blog.title,
+      description: blog.description || "",
+      type: "article",
+      url: absoluteUrl(blog.url),
+      images: [{ url: ogImage }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.description || "",
+      images: [ogImage],
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  try {
+    // Emit lowercase params so blog route URLs are normalized to lower-case.
+    return blogs.map((blog) => ({ slug: blog.slug.toLowerCase() }));
+  } catch (error) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Error generating static params for blog:", error);
+    }
+    return [];
+  }
+}
+
+export default async function BlogPage({ params }: BlogPageProps) {
+  const resolvedParams = await params;
+  const slugParam =
+    typeof resolvedParams?.slug === "string" ? resolvedParams.slug.toLowerCase() : "";
+  const blog = blogs.find((b) => {
+    const s = typeof b?.slug === "string" ? b.slug.toLowerCase() : "";
+    return s === slugParam;
+  });
+
+  if (!blog) {
+    return notFound();
+  }
+
+  const isoDate = new Date(blog.date).toISOString();
+  return (
+    /*
+     * Not a `<main>` element. `MainWrapper` in the root layout already renders the page's single
+     * `<main>`, and carries its id, aria-label and skip-link target. This was a second, nested
+     * `<main>`, which is invalid HTML and splits the landmark.
+     */
+    <div className="container mx-auto max-w-3xl py-12 md:py-20">
+      <article>
+        <ArticleJsonLd
+          title={blog.title}
+          description={blog.description}
+          datePublished={isoDate}
+          url={absoluteUrl(blog.url)}
+          tags={blog.tags}
+          image={blog.cover ? absoluteUrl(blog.cover) : undefined}
+          readingTime={blog.readingTime}
+        />
+        {/* --- Back Link for a Clear User Journey --- */}
+        <Link
+          href={ROUTES.blog}
+          className="mb-8 flex items-center gap-2 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Blog
+        </Link>
+
+        {/* --- Rich, Engaging Article Header --- */}
+        <header className="mb-8">
+          {blog.cover && (
+            <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-xl border">
+              <Image
+                src={blog.cover}
+                alt={`${blog.title} cover image`}
+                fill
+                sizes="(max-width: 768px) 100vw, 75vw"
+                className="object-cover"
+                priority
+              />
+            </div>
+          )}
+          <div className="flex flex-wrap items-center gap-2">
+            {blog.tags.map((tag) => (
+              <Badge
+                key={tag}
+                variant="secondary"
+              >
+                {tag}
+              </Badge>
+            ))}
+          </div>
+          <h1 className="mt-4 font-extrabold text-4xl tracking-tight lg:text-5xl">{blog.title}</h1>
+          <div className="mt-4 flex items-center gap-x-4 text-muted-foreground text-sm">
+            <time dateTime={new Date(blog.date).toISOString()}>
+              {new Date(blog.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </time>
+            <span>•</span>
+            <span>{blog.readingTime}</span>
+          </div>
+        </header>
+
+        <div className="prose prose-lg dark:prose-invert w-full max-w-none">
+          <MdxContent code={blog.content} />
+        </div>
+      </article>
+    </div>
+  );
+}

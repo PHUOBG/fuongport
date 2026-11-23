@@ -1,0 +1,54 @@
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { Expertise } from "@/components/sections/Expertise";
+
+// Explicitly mock #velite so Expertise uses deterministic data in tests
+vi.mock("#velite", () => ({
+  expertise: {
+    categories: [
+      {
+        name: "Frontend",
+        icon: "Code",
+        skills: [
+          {
+            name: "React",
+            iconPath: "/assets/icons/react.svg",
+            level: "Proficient",
+            keyCompetencies: ["Hooks", "JSX", "Context", "Testing"],
+            details: "React is a JavaScript library for building user interfaces.",
+            projectSlugs: ["fairinsight"],
+            rationale: "Widely used for modern web apps.",
+            highlights: ["Built reusable components", "Used hooks extensively"],
+            ecosystem: ["Redux", "React Router"],
+          },
+        ],
+      },
+    ],
+  },
+  projects: [{ slug: "fairinsight", title: "FairInsight", url: "/projects/fairinsight" }],
+}));
+
+describe("Expertise modal", () => {
+  it("opens and closes a skill modal with Escape restoring focus", async () => {
+    const { container } = render(<Expertise />);
+    const trigger = container.querySelector('[aria-label^="View details"]') as HTMLElement;
+    expect(trigger).toBeTruthy();
+    trigger.focus();
+    fireEvent.click(trigger);
+    await waitFor(() => {
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+    });
+    fireEvent.keyDown(document, { key: "Escape" });
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog")).toBeNull();
+    });
+    // Focus is restored from AnimatePresence's onExitComplete after a short delay, because the
+    // portal teardown blurs the trigger in the same tick. Hence waitFor rather than a bare check.
+    await waitFor(
+      () => {
+        expect(document.activeElement).toBe(trigger);
+      },
+      { timeout: 3000 }
+    );
+  }, 10000);
+});
