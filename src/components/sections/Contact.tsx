@@ -1,172 +1,253 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle, Loader2, MessageCircle, XCircle } from "lucide-react";
-import dynamic from "next/dynamic";
-import type { ComponentProps } from "react";
-import { useEffect, useId, useRef, useState } from "react";
+
 import {
-  type FieldErrors,
-  type SubmitHandler,
-  type UseFormRegister,
-  useForm,
-} from "react-hook-form";
-import { z } from "zod";
-import { SocialLink } from "@/components/layout/SocialLink";
+  Briefcase,
+  Check,
+  Copy,
+  ExternalLink,
+  FileText,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Send,
+} from "lucide-react";
+import dynamic from "next/dynamic";
+import { useId, useState } from "react";
+import { bio } from "#velite";
+import { FacebookIcon } from "@/components/icons/FacebookIcon";
+import { GithubIcon } from "@/components/icons/GithubIcon";
+import { LinkedinIcon } from "@/components/icons/LinkedinIcon";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Textarea } from "@/components/ui/Textarea";
 import { useSectionMotion } from "@/hooks/useSectionMotion";
-import { HERO_SOCIALS } from "./Hero.data";
-import { HiddenHoneypot } from "./HiddenHoneypot";
 
-const ContactAnimated = dynamic(() => import("./ContactAnimated").then((m) => m.ContactAnimated), {
-  ssr: false,
-});
-
-type FormStatus =
-  | { status: "idle" }
-  | { status: "loading" }
-  | { status: "success" }
-  | { status: "error"; message: string };
-
-type FormOnSubmit = NonNullable<ComponentProps<"form">["onSubmit"]>;
-
-const contactFormSchema = z.object({
-  name: z.string().trim().min(2, { error: "Name must be at least 2 characters." }),
-  email: z
-    .string()
-    .trim()
-    .pipe(z.email({ error: "Invalid email address." })),
-  message: z.string().trim().min(1, { error: "Message is required." }),
-  _hp: z.string().optional(),
-});
-
-type ContactFormValues = z.infer<typeof contactFormSchema>;
-
-const contactDefaultValues: ContactFormValues = {
-  name: "",
-  email: "",
-  message: "",
-  _hp: "",
-};
+const ContactAnimated = dynamic(
+  () => import("./ContactAnimated").then((m) => m.ContactAnimated),
+  { ssr: false }
+);
 
 export function Contact() {
-  const [status, setStatus] = useState<FormStatus>({ status: "idle" });
-  const [announced, setAnnounced] = useState("");
   const sectionId = useId();
   const sectionMotion = useSectionMotion();
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-    reset,
-  } = useForm<ContactFormValues>({
-    resolver: zodResolver(contactFormSchema),
-    defaultValues: contactDefaultValues,
-    mode: "onTouched",
-  });
+  const email = bio.email ?? "hoangngocphuongcute@gmail.com";
+  const resumeUrl = bio.resume ?? "https://canva.link/cv-cua-fuong";
+  const githubUrl = bio.social?.github ?? "https://github.com/PHUOBG";
+  const linkedinUrl =
+    bio.social?.linkedin ??
+    "https://www.linkedin.com/in/ng%E1%BB%8Dc-ph%C6%B0%C6%A1ng-7a6267411";
+  const facebookUrl =
+    bio.social?.facebook ?? "https://www.facebook.com/phuong0v0";
 
-  const onSubmitForm: SubmitHandler<ContactFormValues> = async (data) => {
-    setStatus({ status: "loading" });
-    setAnnounced("");
-
+  const handleCopyEmail = async () => {
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        if (response.status === 400 || response.status === 422) {
-          const json = await response.json().catch(() => null);
-          if (Array.isArray(json?.errors)) {
-            json.errors.forEach((zErr: { path?: unknown[]; message?: string }) => {
-              const key =
-                typeof zErr.path?.[0] === "string"
-                  ? (zErr.path[0] as keyof ContactFormValues)
-                  : undefined;
-              if (key && zErr.message) {
-                setError(key, { type: "server", message: zErr.message });
-              }
-            });
-          }
-        }
-        throw new Error("Something went wrong. Please try again later.");
-      }
-
-      setStatus({ status: "success" });
-      setAnnounced("Message sent successfully.");
-      reset();
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred.";
-      setStatus({ status: "error", message: errorMessage });
-      setAnnounced("Error sending message. Please try again.");
+      await navigator.clipboard.writeText(email);
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2500);
+    } catch {
+      // Fallback if clipboard API is restricted
+      window.prompt("Copy email address:", email);
     }
   };
 
-  const onSubmit = handleSubmit(onSubmitForm);
-
   const Inner = (
-    <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16">
-      <div className="flex flex-col items-start gap-y-6">
-        <div className="flex items-center gap-4">
-          <MessageCircle
-            aria-hidden="true"
-            focusable="false"
-            className="h-8 w-8 text-primary"
-          />
-          <h2 className="font-bold text-4xl tracking-tight">Let's Connect</h2>
+    <div className="flex flex-col items-center">
+      {/* Header */}
+      <div className="mb-12 text-center max-w-2xl">
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
+          <MessageCircle className="h-4 w-4" />
+          <span>Get In Touch</span>
         </div>
-        <p className="text-lg text-muted-foreground">
-          I&apos;m always open to new opportunities, exciting projects, and meaningful
-          collaborations. Whether you have an idea to share or just want to connect, feel free to
-          reach out. I&apos;d love to hear from you!
+        <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">
+          Let&apos;s Connect &amp; Collaborate
+        </h2>
+        <p className="mt-3 text-base sm:text-lg text-muted-foreground">
+          I am actively looking for software engineering, AI/Computer Vision, and
+          tech internship opportunities. Feel free to contact me directly
+          through any of the channels below!
         </p>
-        <div className="flex items-center gap-4">
-          {HERO_SOCIALS.filter((s) => s.name !== "Resume").map((social) => (
-            <SocialLink
-              key={social.name}
-              {...social}
-            />
-          ))}
+      </div>
+
+      {/* Main Grid: Direct Contact Channels */}
+      <div className="grid w-full max-w-5xl grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Email Card (Highlight) */}
+        <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-card/80 p-6 sm:p-8 shadow-lg backdrop-blur-md transition-all hover:border-primary/60 hover:shadow-primary/10">
+          <div className="flex items-start justify-between">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <Mail className="h-7 w-7" />
+            </div>
+            <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-500">
+              Primary Channel
+            </span>
+          </div>
+          <div className="mt-6">
+            <p className="text-sm font-medium text-muted-foreground">
+              Direct Email
+            </p>
+            <p className="mt-1 break-all text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+              {email}
+            </p>
+            <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
+              Usually responds within a few hours.
+            </p>
+          </div>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Button asChild size="default" className="gap-2">
+              <a href={`mailto:${email}?subject=Opportunity%20Inquiry%20-%20Ngoc%20Phuong%20Portfolio`}>
+                <Send className="h-4 w-4" />
+                Send Email
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              size="default"
+              onClick={handleCopyEmail}
+              className="gap-2"
+            >
+              {copiedEmail ? (
+                <>
+                  <Check className="h-4 w-4 text-emerald-500" />
+                  <span className="text-emerald-500">Copied!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4" />
+                  <span>Copy Address</span>
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+
+        {/* CV / Resume Card */}
+        <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/80 p-6 sm:p-8 shadow-md backdrop-blur-md transition-all hover:border-border hover:shadow-lg">
+          <div className="flex items-start justify-between">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-500">
+              <FileText className="h-7 w-7" />
+            </div>
+            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              Updated 2026
+            </span>
+          </div>
+          <div className="mt-6">
+            <p className="text-sm font-medium text-muted-foreground">
+              Curriculum Vitae
+            </p>
+            <p className="mt-1 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+              Online Interactive CV
+            </p>
+            <p className="mt-2 text-xs sm:text-sm text-muted-foreground">
+              Comprehensive overview of my skills, projects, honors &amp; experiences.
+            </p>
+          </div>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Button asChild size="default" className="gap-2">
+              <a
+                href={resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>View Full CV</span>
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="default">
+              <a href="/resume.pdf" download="CV_Hoang_Thi_Ngoc_Phuong.pdf">
+                Download PDF
+              </a>
+            </Button>
+          </div>
+        </div>
+
+        {/* Location & University Profile */}
+        <div className="rounded-2xl border border-border/60 bg-card/60 p-6 shadow-sm backdrop-blur-sm sm:p-7">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-500">
+              <MapPin className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Location &amp; Education
+              </p>
+              <h3 className="text-lg font-bold text-foreground">
+                Da Nang, Viet Nam
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                The University of Danang – University of Science and Technology (DUT)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Career Status Card */}
+        <div className="rounded-2xl border border-border/60 bg-card/60 p-6 shadow-sm backdrop-blur-sm sm:p-7">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-500">
+              <Briefcase className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Current Status
+              </p>
+              <h3 className="text-lg font-bold text-foreground">
+                Open to Opportunities
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Full-stack Web Dev, AI/Vision Dev, Internship &amp; Projects
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card p-8 shadow-sm transition-opacity delay-100 duration-700">
-        <div
-          aria-live="polite"
-          className="sr-only"
-        >
-          {announced}
+      {/* Social / Professional Profiles Bar */}
+      <div className="mt-8 flex w-full max-w-5xl flex-wrap items-center justify-between gap-4 rounded-2xl border border-border/50 bg-muted/30 p-4 sm:p-6">
+        <div>
+          <h4 className="text-base font-semibold text-foreground">
+            Connect on Professional &amp; Social Networks
+          </h4>
+          <p className="text-xs sm:text-sm text-muted-foreground">
+            Feel free to connect or drop a message anytime.
+          </p>
         </div>
-        {/*
-          Focus management on submit.
+        <div className="flex flex-wrap items-center gap-3">
+          <Button asChild variant="outline" size="sm" className="gap-2">
+            <a
+              href={linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit LinkedIn Profile"
+            >
+              <LinkedinIcon className="h-4 w-4" />
+              <span>LinkedIn</span>
+            </a>
+          </Button>
 
-          The form unmounts in favour of a result panel on both success and error, and the submit
-          button it contained is what held focus. Left alone, focus fell back to <body>: the
-          aria-live region still announced the outcome, but a keyboard user was dropped out of the
-          form with nothing focused and no way back to what just happened -- the result panel had
-          no tab stop of its own. Each result now takes focus on mount.
-        */}
-        {status.status === "success" ? (
-          <SuccessMessage onReset={() => setStatus({ status: "idle" })} />
-        ) : status.status === "error" ? (
-          <ErrorMessage
-            message={status.message}
-            onRetry={() => setStatus({ status: "idle" })}
-          />
-        ) : (
-          <ContactForm
-            onSubmit={onSubmit}
-            status={status.status}
-            register={register}
-            errors={errors}
-          />
-        )}
+          <Button asChild variant="outline" size="sm" className="gap-2">
+            <a
+              href={githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit GitHub Profile"
+            >
+              <GithubIcon className="h-4 w-4" />
+              <span>GitHub</span>
+            </a>
+          </Button>
+
+          <Button asChild variant="outline" size="sm" className="gap-2">
+            <a
+              href={facebookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Visit Facebook Profile"
+            >
+              <FacebookIcon className="h-4 w-4" />
+              <span>Facebook</span>
+            </a>
+          </Button>
+        </div>
       </div>
     </div>
   );
@@ -183,180 +264,5 @@ export function Contact() {
     >
       {Inner}
     </section>
-  );
-}
-
-function ContactForm({
-  onSubmit,
-  status,
-  register,
-  errors,
-}: {
-  onSubmit: FormOnSubmit;
-  status: "idle" | "loading";
-  register: UseFormRegister<ContactFormValues>;
-  errors: FieldErrors<ContactFormValues>;
-}) {
-  const nameId = useId();
-  const emailId = useId();
-  const messageId = useId();
-  const errorId = (field: string) => `${field}-error`;
-
-  return (
-    <form
-      onSubmit={onSubmit}
-      className="space-y-6"
-      autoComplete="off"
-      noValidate
-    >
-      <div className="space-y-2">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-2 sm:gap-3">
-          <Label htmlFor={nameId}>Name</Label>
-          {errors.name?.message && (
-            <p
-              id={errorId("name")}
-              className="min-w-0 justify-self-end wrap-break-word text-right text-destructive text-xs leading-tight sm:text-sm"
-            >
-              {String(errors.name.message)}
-            </p>
-          )}
-        </div>
-        <Input
-          id={nameId}
-          type="text"
-          placeholder="Your Name"
-          disabled={status === "loading"}
-          aria-invalid={!!errors.name || undefined}
-          aria-describedby={errors.name ? errorId("name") : undefined}
-          {...register("name")}
-        />
-      </div>
-      <div className="space-y-2">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-2 sm:gap-3">
-          <Label htmlFor={emailId}>Email</Label>
-          {errors.email?.message && (
-            <p
-              id={errorId("email")}
-              className="min-w-0 justify-self-end wrap-break-word text-right text-destructive text-xs leading-tight sm:text-sm"
-            >
-              {String(errors.email.message)}
-            </p>
-          )}
-        </div>
-        <Input
-          id={emailId}
-          type="email"
-          placeholder="your@email.com"
-          disabled={status === "loading"}
-          aria-invalid={!!errors.email || undefined}
-          aria-describedby={errors.email ? errorId("email") : undefined}
-          {...register("email")}
-        />
-      </div>
-      <div className="space-y-2">
-        <div className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-2 sm:gap-3">
-          <Label htmlFor={messageId}>Message</Label>
-          {errors.message?.message && (
-            <p
-              id={errorId("message")}
-              className="min-w-0 justify-self-end wrap-break-word text-right text-destructive text-xs leading-tight sm:text-sm"
-            >
-              {String(errors.message.message)}
-            </p>
-          )}
-        </div>
-        <Textarea
-          id={messageId}
-          placeholder="Your message..."
-          rows={5}
-          disabled={status === "loading"}
-          aria-invalid={!!errors.message || undefined}
-          aria-describedby={errors.message ? errorId("message") : undefined}
-          {...register("message")}
-        />
-      </div>
-      <HiddenHoneypot inputProps={register("_hp")} />
-      <Button
-        type="submit"
-        className="w-full"
-        size="lg"
-        disabled={status === "loading"}
-        aria-label={status === "loading" ? "Sending message" : undefined}
-      >
-        {status === "loading" ? (
-          <Loader2
-            aria-hidden="true"
-            focusable="false"
-            className="mr-2 h-5 w-5 animate-spin"
-          />
-        ) : (
-          "Send Message"
-        )}
-      </Button>
-    </form>
-  );
-}
-
-function SuccessMessage({ onReset }: { onReset: () => void }) {
-  // Focused on mount rather than a container: the heading carries the outcome, and screen readers
-  // announce it twice over -- once via focus, once via the live region. `tabIndex={-1}` keeps it
-  // out of the tab order while still being a valid focus target.
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  useEffect(() => headingRef.current?.focus(), []);
-
-  return (
-    <div className="flex animate-fade-in flex-col items-center justify-center text-center">
-      <CheckCircle
-        aria-hidden="true"
-        focusable="false"
-        className="h-16 w-16 text-green-500"
-      />
-      <h3
-        ref={headingRef}
-        tabIndex={-1}
-        className="mt-4 font-bold text-2xl outline-none"
-      >
-        Thank You!
-      </h3>
-      <p className="mt-2 text-muted-foreground">Your message has been sent successfully.</p>
-      {/*
-        Without this the success panel is a dead end: it contains no control at all, so a keyboard
-        user who submitted a second message would have to Shift+Tab back out to reach the form.
-      */}
-      <Button
-        onClick={onReset}
-        variant="outline"
-        className="mt-6"
-      >
-        Send another message
-      </Button>
-    </div>
-  );
-}
-
-function ErrorMessage({ message, onRetry }: { message: string; onRetry: () => void }) {
-  // The retry button is the only control here, so it is the natural focus target: focus lands on
-  // the action instead of on the text describing the failure.
-  const retryRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => retryRef.current?.focus(), []);
-
-  return (
-    <div className="flex animate-fade-in flex-col items-center justify-center text-center">
-      <XCircle
-        aria-hidden="true"
-        focusable="false"
-        className="h-16 w-16 text-destructive"
-      />
-      <h3 className="mt-4 font-bold text-2xl">Oops!</h3>
-      <p className="mt-2 text-muted-foreground">{message}</p>
-      <Button
-        ref={retryRef}
-        onClick={onRetry}
-        variant="outline"
-        className="mt-6"
-      >
-        Try Again
-      </Button>
-    </div>
   );
 }
