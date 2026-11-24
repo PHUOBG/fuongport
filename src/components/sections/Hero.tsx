@@ -124,10 +124,10 @@ export function Hero() {
   return (
     <section
       data-section="hero"
-      className="flex min-h-[90vh] items-center justify-center px-4 py-16"
+      className="flex min-h-[90vh] items-center justify-center px-6 py-20 lg:py-28"
       aria-label="Hero section"
     >
-      <div className="flex w-full max-w-7xl flex-col items-center gap-6 text-center lg:flex-row lg:items-start lg:justify-center lg:gap-14 lg:text-left">
+      <div className="flex w-full max-w-6xl flex-col items-center gap-10 text-center lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:text-left">
         <HeroContent
           greeting={greeting}
           greetingReady={clockHydrated}
@@ -268,7 +268,7 @@ const HeroImage = memo(({ reduceMotion }: { reduceMotion: boolean }) => {
   return (
     <div
       className={cn(
-        "group -mt-4 relative h-64 w-64 shrink-0 overflow-hidden rounded-full border-4 border-accent lg:mt-6 lg:h-80 lg:w-80",
+        "group relative h-64 w-64 shrink-0 overflow-hidden rounded-full border-4 border-accent sm:h-72 sm:w-72 md:h-80 md:w-80 lg:h-96 lg:w-96 xl:h-[400px] xl:w-[400px]",
         reduceMotion ? "" : "animate-float"
       )}
     >
@@ -276,7 +276,7 @@ const HeroImage = memo(({ reduceMotion }: { reduceMotion: boolean }) => {
         src="/assets/images/ngoc-phuong-hero.jpg"
         alt="Ngoc Phuong profile photo"
         fill
-        sizes="(max-width: 1023px) 256px, 320px"
+        sizes="(max-width: 640px) 256px, (max-width: 1024px) 320px, 400px"
         quality={95}
         className="scale-[1.28] object-cover object-[50%_58%] transition-transform duration-300 ease-in-out group-hover:scale-[1.34]"
         priority
