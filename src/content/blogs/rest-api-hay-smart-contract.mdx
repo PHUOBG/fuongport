@@ -1,0 +1,78 @@
+---
+title: "REST API hay Smart Contract? — Lựa chọn kiến trúc cho từng bài toán"
+date: 2026-03-20
+tags:
+  - Architecture
+  - Web3
+  - REST API
+  - Smart Contract
+  - Blockchain
+description: "Thử đặt ra một tình huống thực tế: Tối thứ Sáu chuyển 500 triệu nhưng phải chờ thứ Hai. Vấn đề không nằm ở backend mà ở kiến trúc giữa Web2 tập trung và Web3 phi tập trung."
+cover: /assets/images/rest-api-smart-contract-cover.jpg
+---
+
+Thử đặt ra một tình huống thực tế: **Tối thứ Sáu, bạn cần chuyển gấp 500 triệu đồng cho người thân. Tiền đến khi nào?** 
+
+Câu trả lời mà ai cũng biết: phải chờ đến sáng thứ Hai, giờ hành chính. Trong khi đó, một lệnh gọi API chỉ mất vài mili giây, tin nhắn gửi là tức thì, server chạy 24/7 — nhưng dòng tiền vẫn phải chờ con người xử lý. Vấn đề không nằm ở backend hay database, mà nằm ở **kiến trúc**.
+
+---
+
+## 1. Sự tiến hóa: Web1 — Web2 — Web3
+
+- **Web 1.0:** Thời kỳ giao tiếp một chiều, người dùng chỉ đọc (read-only), không tương tác.
+- **Web 2.0:** Mang lại like, share, comment, sáng tạo nội dung — nhưng kéo theo một hệ quả: **toàn bộ dữ liệu tập trung vào tay người vận hành nền tảng**.
+
+> **Vấn đề cốt lõi của Web2:** Facebook có thể xóa tài khoản của bạn bất cứ lúc nào mà không cần xin phép — điều đã xảy ra thực tế khi họ đổi thương hiệu sang Metaverse và khóa hàng loạt tài khoản người dùng có tên trùng. Ngoài ra, nếu server down, toàn bộ dịch vụ tê liệt; mọi giao dịch tài chính phải qua trung gian, phụ thuộc vào giờ hành chính.
+
+---
+
+## 2. Web3 và Smart Contract: Tin vào toán học, không tin vào con người
+
+Web3 không chỉ cho phép tương tác — nó cho phép bạn **thực sự sở hữu dữ liệu của mình** thông qua **Smart Contract**: một hợp đồng tự thực thi, triển khai trên blockchain phi tập trung, minh bạch, bất biến và không cần trung gian.
+
+Thay vì lưu trữ tập trung ở một server, blockchain phân tán dữ liệu ra hàng nghìn nodes toàn cầu:
+- **Ethereum:** khoảng ~7.800 nodes
+- **Bitcoin:** khoảng ~16.000 nodes
+
+Muốn tấn công, kẻ xấu phải kiểm soát hơn 51% số node đó — điều gần như bất khả thi trên thực tế. Đây chính là sự dịch chuyển mang tính bước ngoặt: **từ Brand-based trust (tin vào thương hiệu) sang Math-based trust (tin vào thuật toán).**
+
+---
+
+## 3. Web3 phù hợp ở đâu — và không phù hợp ở đâu?
+
+Smart Contract đã chứng minh giá trị vượt trội trong các bài toán cụ thể:
+1. **DeFi (Tài chính phi tập trung):** Loại bỏ hoàn toàn vai trò của ngân hàng trung gian.
+2. **NFT & Quyền sở hữu số:** Chứng minh quyền sở hữu tài sản số, bản quyền tác giả nghệ thuật, vật phẩm trong game.
+3. **Thanh toán xuyên biên giới 24/7:** Tốc độ quyết toán (settlement) tính bằng giây mà không phụ thuộc biên giới hay giờ làm việc ngân hàng.
+
+Tuy nhiên, **nếu các bên đã có sự tin tưởng lẫn nhau, Web2 vẫn là lựa chọn tối ưu hơn rất nhiều.** Áp dụng blockchain vào những bài toán không cần thiết là dư thừa, tốn tài nguyên và suy giảm hiệu năng nghiêm trọng. **Smart Contract không sinh ra để thay thế REST API — chúng giải quyết hai bài toán hoàn toàn khác nhau.**
+
+---
+
+## 4. Những thách thức Web3 vẫn đang đối mặt
+
+Web3 ra đời từ khoảng năm 2014 và hiện vẫn đang trong giai đoạn hoàn thiện, trưởng thành:
+- **Rào cản UX:** Việc quản lý Seed Phrase (12 hoặc 24 ký tự) là trở ngại lớn đối với người dùng phổ thông.
+- **Rủi ro bảo mật bất biến:** Một lỗi bug logic trong Smart Contract có thể dẫn tới thất thoát tài sản vĩnh viễn — không có bộ phận hotline hay nhân viên hỗ trợ để hoàn tiền như ngân hàng truyền thống.
+- **Tốc độ xác nhận giao dịch:** Ethereum vẫn cần khoảng 5–12 giây (dù các Layer 1/Layer 2 hiện đại như Solana đã cải thiện xuống khoảng ~400ms).
+- **Ngưỡng kỹ thuật cho Developer:** Chuyển đổi từ mô hình Web2 sang lập trình hệ thống phân tán với Rust/Solidity đòi hỏi tư duy quản lý tài nguyên và bảo mật cực kỳ khắt khe.
+
+---
+
+## 5. Góc nhìn kỹ thuật: Nhìn nhận có chọn lọc
+
+- **Elon Musk** từng nhận định Web3 mang nhiều yếu tố tiếp thị (marketing hype).
+- **Jack Dorsey** nghi ngờ nó đang bị chi phối bởi các quỹ đầu tư mạo hiểm lớn.
+- Trong khi đó, **Mark Zuckerberg**, cùng với các tập đoàn công nghệ hàng đầu như **Google, Meta, Amazon**, đang tích cực đầu tư hàng tỷ USD vào hạ tầng Web3 để chuẩn bị cho kỷ nguyên tiếp theo.
+
+Là người làm kỹ thuật, chúng ta không cần đứng về phía nào trong cuộc tranh luận hype hay anti-hype. **Điều quan trọng nhất là hiểu rõ bản chất của từng kiến trúc, biết khi nào nên dùng công nghệ nào, và liên tục cập nhật xu hướng để nắm bắt cơ hội đúng thời điểm.**
+
+> **Câu hỏi quyết định:** Bài toán của bạn có thực sự cần **Trust (Không cần tin cậy bên thứ 3)**, **Ownership (Sở hữu thực sự)**, và **Settlement tức thì** hay không?  
+> - Nếu **CÓ** ➔ Web3 & Smart Contract.  
+> - Nếu **KHÔNG** ➔ REST API & Web2 truyền thống. Đừng bao giờ over-engineer!
+
+---
+
+*Bài chia sẻ từ buổi **Knowledge Sharing nội bộ — GDG on Campus DUT & DSUC Blockchain Club**.*  
+*Tải slide bài thuyết trình đầy đủ:* [sharing1.pdf](/assets/sharing1.pdf)
+
