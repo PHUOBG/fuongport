@@ -10,7 +10,6 @@ import {
   MapPin,
   MessageCircle,
   Phone,
-  Send,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useId, useState } from "react";
@@ -93,27 +92,20 @@ export function Contact() {
             </p>
           </div>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Button asChild size="default" className="gap-2">
-              <a href={`mailto:${email}?subject=Opportunity%20Inquiry%20-%20Ngoc%20Phuong%20Portfolio`}>
-                <Send className="h-4 w-4" />
-                Send Email
-              </a>
-            </Button>
             <Button
-              variant="outline"
               size="default"
               onClick={handleCopyEmail}
               className="gap-2"
             >
               {copiedEmail ? (
                 <>
-                  <Check className="h-4 w-4 text-emerald-500" />
-                  <span className="text-emerald-500">Copied!</span>
+                  <Check className="h-4 w-4 text-emerald-400" />
+                  <span className="text-emerald-400 font-semibold">Address Copied!</span>
                 </>
               ) : (
                 <>
                   <Copy className="h-4 w-4" />
-                  <span>Copy Address</span>
+                  <span>Copy Email Address</span>
                 </>
               )}
             </Button>

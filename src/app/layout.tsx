@@ -43,7 +43,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
-  icons: { icon: "/favicon.ico", shortcut: "/favicon-16x16.png", apple: "/apple-touch-icon.png" },
+  icons: {
+    icon: [
+      { url: "/assets/images/logo-avatar.jpg", type: "image/jpeg" },
+      { url: "/favicon.ico" },
+    ],
+    shortcut: "/assets/images/logo-avatar.jpg",
+    apple: "/assets/images/logo-avatar.jpg",
+  },
 };
 
 export const viewport: Viewport = {

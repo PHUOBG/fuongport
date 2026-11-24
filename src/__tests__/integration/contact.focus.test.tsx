@@ -10,11 +10,7 @@ describe("contact section recruiter information", () => {
     expect(screen.getByText(/hoangngocphuongcute@gmail.com/i)).toBeInTheDocument();
 
     // Direct action buttons
-    expect(screen.getByRole("link", { name: /send email/i })).toHaveAttribute(
-      "href",
-      expect.stringContaining("mailto:hoangngocphuongcute@gmail.com")
-    );
-    expect(screen.getByRole("button", { name: /copy address/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /copy email address/i })).toBeInTheDocument();
 
     // CV links
     expect(screen.getByRole("link", { name: /view full cv/i })).toBeInTheDocument();
